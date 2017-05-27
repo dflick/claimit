@@ -1,0 +1,47 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="." />
+  <title>Claims</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href="./app.css" rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+  <script src="./mobiledevice.js"></script>
+</head>
+<body ng-app="mobileDeviceApp" ng-controller="mobileDeviceController">
+  <label for="accountList">Choose an account to use:</label>
+  <select ng-init="selectedAccount" ng-change = "onChangeAccount()" ng-model="selectedAccount" ng-options="account for account in accountList track by account"></select> {{ selectedAccountData[0].name }}
+  <hr>
+  <a href="http://localhost:8000/">Regulator</a> | 
+  <a href="http://localhost:8000/insurer.html">Insurer</a>
+  <hr>
+  <h1>ClaimIT</h1>
+  <h2>Mobiles</h2>
+  <h1><label for="addDevice">Add Device:</label></h1>
+  <label for="imei">Imei</label>
+  <br><input type="text" id="imei" ng-model="imei" placeholder="12345"></input>
+  <label for="deviceOwner">Owner</label>
+  <br><input type="text" id="deviceOwner" ng-model="deviceOwner" placeholder="1"></input>
+  <label for="insuranceOwner">Insured</label>
+  <br><input type="text" id="insuranceOwner" ng-model="insuranceOwner" placeholder="1"></input>
+  <label for="trashed">Trashed</label>
+  <br><input type="checkbox" id="trashed" value="true" ng-model="trashed"></input> 
+  <br><br><button id="addDevice" ng-click="addDevice(imei, deviceOwner, insuranceOwner, trashed)">Add Device</button>
+  <button id="listDevices" ng-click="listDevices()">List Devices</button>
+  <button id="findDevice" ng-click="findDevice(imei)">Find Device</button>
+  <br>
+  <span id="status"></span>
+  <!-- <br><br><span class="black"><span id="mobiles">{{ mobiles }}</span> -->
+  <br><br>
+  <table>
+    <tr ng-repeat="x in mobiles">
+      <td>{{x.imei}}</td>
+      <td>{{x.owner}}</td>
+      <td>{{x.insured}}</td>
+      <td>{{x.trashed}}</td>
+    </tr>
+  </table>
+</body>
+</html>

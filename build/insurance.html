@@ -1,0 +1,29 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="." />
+  <title>Claims</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href="./app.css" rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+  <script src="./insurance.js"></script>
+</head>
+<body ng-app="insuranceApp" ng-controller="insuranceController">
+  <h1>ClaimIT</h1>
+  <h2>Insurances</h2>
+  <h3>Your address as a <span class="black">Regulator</span> is:</h3> 
+  <h3><span class="black"><span id="curRegulator">{{ curRegulator }}</span></h3> 
+  <br>
+  <h1><label for="addInsurance">Add Insurance:</label></h1>
+  <label for="newName"></label>
+  <br><input type="text" id="newName" ng-model="newName" placeholder="e.g., Phone Insurance"></input>
+  <label for="newDescription"></label>
+  <br><input type="text" id="newDescription" ng-model="newDescription" placeholder="e.g., Insurance for Phones"></input>
+  <br><br><button id="addNewInsurance" ng-click="addNewInsurance(newName, newDescription)">Add Insurance</button>
+  <span id="status"></span>
+  <br><br><button id="listInsurances" ng-click="listInsurances()">List Insurances </button>
+  <br><br><span class="black"><span id="insurances">{{ insurances }}</span>
+</body>
+</html>

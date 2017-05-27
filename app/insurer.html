@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="." />
+  <title>Claims</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href="./app.css" rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+  <script src="./insurer.js"></script>
+</head>
+<body ng-app="insurerApp" ng-controller="insurerController">
+  <label for="accountList">Choose an account to use:</label>
+  <select ng-init="selectedAccount" ng-change = "onChangeAccount()" ng-model="selectedAccount" ng-options="account for account in accountList track by account"></select> {{ regulatorIndicator }}
+  <br> {{ selectedAccount }}
+  <hr>
+  <a href="index.html">Regulator</a> | 
+  <a href="mobiledevice.html">Device</a>
+  <hr>
+  <h1>ClaimIT</h1>
+  <h2>Insurer</h2>
+  <br>
+  <h1><label for="addInsurer">Add Insurer:</label></h1>
+  <label for="newAddress"></label>
+  <br><input type="text" id="newAddress" ng-model="newAddress" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
+  <label for="newName"></label>
+  <br><input type="text" id="newName" ng-model="newName" placeholder="e.g., Company name"></input>
+  <br><br><button id="addNewInsurer" ng-click="addNewInsurer(newAddress, newName)">Add Insurer</button>
+  <button id="listInsurers" ng-click="listInsurers()">List Insurers</button>
+  <br>
+  <span id="status"></span>
+  <!-- <br><br><span class="black"><span id="insurers">{{ insurers }}</span> -->
+  <br><br>
+  <table>
+    <tr ng-repeat="x in insurers">
+      <td>{{x.insurerName}}</td>
+      <td>{{x.insurerAddress}}</td>
+    </tr>
+  </table>
+</body>
+</html>

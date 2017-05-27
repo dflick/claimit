@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="." />
+  <title>Claims</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href="./app.css" rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+  <script src="./regulator.js"></script>
+</head>
+<body ng-app="regulatorApp" ng-controller="regulatorController">
+  <label for="accountList">Choose an account to use:</label>
+  <select ng-init="selectedAccount" ng-change = "onChangeAccount()" ng-model="selectedAccount" ng-options="account for account in accountList track by account"></select>
+  <br> {{ selectedAccount }}
+  <hr>
+  <a href="insurer.html">Insurer</a> | 
+  <a href="mobiledevice.html">Device</a>
+  <hr>  
+  <h1>ClaimIT</h1>
+  <h2>Regulator</h2>
+  <h3>Your address as a <span class="black">Regulator</span> is:</h3> 
+  <h3><span class="black"><span id="curRegulator">{{ curRegulator }}</span></h3> 
+  <br>
+  <h1><label for="newRegulator">Change Regulator to:</label></h1>
+  <br><input type="text" id="newRegulator" ng-model="newRegulator" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
+  <br><br><button id="changeRegulator" ng-click="changeRegulator(newRegulator)">Change Regulator</button>
+  <button id="getRegulator" ng-click="getRegulator()">Get Regulator</button>
+  <br>
+  <span id="status"></span>
+  <br><br>
+  <table>
+    <tr ng-repeat="x in theRegulator">
+      <td>{{x.regulator}}</td>
+    </tr>
+  </table>
+</body>
+</html>
