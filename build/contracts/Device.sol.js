@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("Insurance error: Please call setProvider() first before calling new().");
+      throw new Error("Device error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("Insurance error: contract binary not set. Can't deploy new instance.");
+      throw new Error("Device error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("Insurance contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of Insurance: " + unlinked_libraries);
+      throw new Error("Device contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of Device: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to Insurance.at(): " + address);
+      throw new Error("Invalid address passed to Device.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: Insurance not deployed or address not set.");
+      throw new Error("Cannot find deployed address: Device not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -350,18 +350,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   "default": {
     "abi": [
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "newInsuranceName",
-            "type": "string"
-          },
-          {
-            "name": "newInsuranceDescription",
-            "type": "string"
-          }
-        ],
-        "name": "addInsurance",
+        "constant": true,
+        "inputs": [],
+        "name": "getBroke",
         "outputs": [
           {
             "name": "",
@@ -372,18 +363,26 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "newRegulator",
-            "type": "address"
-          }
-        ],
-        "name": "changeRegulator",
+        "constant": true,
+        "inputs": [],
+        "name": "getScrap",
         "outputs": [
           {
             "name": "",
-            "type": "address"
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getStolen",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
           }
         ],
         "payable": false,
@@ -393,6 +392,40 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [],
         "name": "close",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "deviceBroken",
+            "type": "bool"
+          }
+        ],
+        "name": "setBroke",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getImei",
+        "outputs": [
+          {
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getLost",
         "outputs": [
           {
             "name": "",
@@ -403,28 +436,15 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "getLastInsuranceId",
-        "outputs": [
+        "constant": false,
+        "inputs": [
           {
-            "name": "",
-            "type": "uint256"
+            "name": "deviceLost",
+            "type": "bool"
           }
         ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getNextInsuranceId",
-        "outputs": [
-          {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
+        "name": "setLost",
+        "outputs": [],
         "payable": false,
         "type": "function"
       },
@@ -432,59 +452,12 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [
           {
-            "name": "atIndex",
-            "type": "uint256"
-          },
-          {
-            "name": "newInsuranceName",
-            "type": "string"
-          },
-          {
-            "name": "newInsuranceDescription",
-            "type": "string"
+            "name": "deviceScrapped",
+            "type": "bool"
           }
         ],
-        "name": "changeInsurance",
-        "outputs": [
-          {
-            "name": "index",
-            "type": "uint256"
-          },
-          {
-            "name": "insuranceName",
-            "type": "string"
-          },
-          {
-            "name": "insuranceDescription",
-            "type": "string"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "atIndex",
-            "type": "uint256"
-          }
-        ],
-        "name": "getInsurance",
-        "outputs": [
-          {
-            "name": "index",
-            "type": "uint256"
-          },
-          {
-            "name": "insuranceName",
-            "type": "string"
-          },
-          {
-            "name": "insuranceDescription",
-            "type": "string"
-          }
-        ],
+        "name": "setScrap",
+        "outputs": [],
         "payable": false,
         "type": "function"
       },
@@ -492,157 +465,31 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [
           {
-            "name": "newAdmin",
-            "type": "address"
+            "name": "deviceStolen",
+            "type": "bool"
           }
         ],
-        "name": "changeAdmin",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
+        "name": "setStolen",
+        "outputs": [],
         "payable": false,
         "type": "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "getRegulator",
-        "outputs": [
+        "inputs": [
           {
-            "name": "",
-            "type": "address"
+            "name": "deviceImei",
+            "type": "string"
           }
         ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "inputs": [],
         "payable": false,
         "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_insuranceIndex",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "_insuranceName",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "_insuranceDescription",
-            "type": "string"
-          }
-        ],
-        "name": "OnInsuranceAdded",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldRegulator",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newRegulator",
-            "type": "address"
-          }
-        ],
-        "name": "OnRegulatorChanged",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldAdmin",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "OnAdminChanged",
-        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405234610000575b5b5b5b60008054600160a060020a03191633600160a060020a03161790555b5b60018054600160a060020a03191633600160a060020a03161790555b60016003555b5b610c428061005c6000396000f3006060604052361561007d5763ffffffff60e060020a60003504166305087bf08114610082578063085281901461012657806343d726d61461015b5780634f724cd01461017c5780636fa051e91461019b578063750ddb90146101ba57806385fae602146103485780638f28397014610455578063f7e317f41461048a575b610000565b3461000057610112600480803590602001908201803590602001908080601f0160208091040260200160405190810160405280939291908181526020018383808284375050604080516020601f89358b018035918201839004830284018301909452808352979998810197919650918201945092508291508401838280828437509496506104b395505050505050565b604080519115158252519081900360200190f35b346100005761013f600160a060020a036004351661077e565b60408051600160a060020a039092168252519081900360200190f35b346100005761011261081c565b604080519115158252519081900360200190f35b3461000057610189610848565b60408051918252519081900360200190f35b346100005761018961084f565b60408051918252519081900360200190f35b346100005760408051602060046024803582810135601f810185900485028601850190965285855261024b958335959394604494939290920191819084018382808284375050604080516020601f89358b0180359182018390048302840183019094528083529799988101979196509182019450925082915084018382808284375094965061085695505050505050565b6040518084815260200180602001806020018381038352858181518152602001915080519060200190808383600083146102a0575b8051825260208311156102a057601f199092019160209182019101610280565b505050905090810190601f1680156102cc5780820380516001836020036101000a031916815260200191505b508381038252845181528451602091820191860190808383821561030b575b80518252602083111561030b57601f1990920191602091820191016102eb565b505050905090810190601f1680156103375780820380516001836020036101000a031916815260200191505b509550505050505060405180910390f35b346100005761024b600435610a01565b6040518084815260200180602001806020018381038352858181518152602001915080519060200190808383600083146102a0575b8051825260208311156102a057601f199092019160209182019101610280565b505050905090810190601f1680156102cc5780820380516001836020036101000a031916815260200191505b508381038252845181528451602091820191860190808383821561030b575b80518252602083111561030b57601f1990920191602091820191016102eb565b505050905090810190601f1680156103375780820380516001836020036101000a031916815260200191505b509550505050505060405180910390f35b346100005761013f600160a060020a0360043516610b6a565b60408051600160a060020a039092168252519081900360200190f35b346100005761013f610c06565b60408051600160a060020a039092168252519081900360200190f35b60015460009033600160a060020a039081169116146104d157610000565b604060405190810160405280848152602001838152506004600060035481526020019081526020016000206000820151816000019080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061054e57805160ff191683800117855561057b565b8280016001018555821561057b579182015b8281111561057b578251825591602001919060010190610560565b5b5061059c9291505b808211156105985760008155600101610584565b5090565b50506020820151816001019080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106105f057805160ff191683800117855561061d565b8280016001018555821561061d579182015b8281111561061d578251825591602001919060010190610602565b5b5061063e9291505b808211156105985760008155600101610584565b5090565b50506003805460028190556001810190915560408051828152606060208083018281528a519284019290925289517f44d09fccfe5b4ef3be8397a59d8a9a7028f830e8c32451f8e1a714d3440880f697509495508994899484019160808501919087019080838382156106cc575b8051825260208311156106cc57601f1990920191602091820191016106ac565b505050905090810190601f1680156106f85780820380516001836020036101000a031916815260200191505b5083810382528451815284516020918201918601908083838215610737575b80518252602083111561073757601f199092019160209182019101610717565b505050905090810190601f1680156107635780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a15060015b5b92915050565b60015460009033600160a060020a0390811691161461079c57610000565b6001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517fc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe9281900390910190a150600154600160a060020a03165b5b919050565b6000805433600160a060020a0390811691161461083857610000565b33600160a060020a0316ff5b5b90565b6002545b90565b6003545b90565b60408051602081810183526000808352835191820190935282815260015433600160a060020a0390811691161461088c57610000565b50506040805180820182528481526020808201859052600087815260048252928320825180518254838752958490208a975089968996958594601f600260001961010060018716150201909416939093048301829004840194939291019083901061090257805160ff191683800117855561092f565b8280016001018555821561092f579182015b8281111561092f578251825591602001919060010190610914565b5b506109509291505b808211156105985760008155600101610584565b5090565b50506020820151816001019080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106109a457805160ff19168380011785556109d1565b828001600101855582156109d1579182015b828111156109d15782518255916020019190600101906109b6565b5b506109f29291505b808211156105985760008155600101610584565b5090565b505050505b5b93509350939050565b6040805160208181018352600080835283518083018552818152858252600483529084902080548551601f6002600019610100600186161502019093169290920491820185900485028101850190965280865286959293830182828015610aa95780601f10610a7e57610100808354040283529160200191610aa9565b820191906000526020600020905b815481529060010190602001808311610a8c57829003601f168201915b50505050509150600460008581526020019081526020016000206001018054600181600116156101000203166002900480601f016020809104026020016040519081016040528092919081815260200182805460018160011615610100020316600290048015610b5a5780601f10610b2f57610100808354040283529160200191610b5a565b820191906000526020600020905b815481529060010190602001808311610b3d57829003601f168201915b50939450505050505b9193909250565b6000805433600160a060020a03908116911614610b8657610000565b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517f0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb69281900390910190a150600054600160a060020a03165b5b919050565b600154600160a060020a03165b905600a165627a7a72305820cb58eaf48d69cfc05917cff6697c5c401b16ac729dcaa6796febaf1db517d3140029",
-    "events": {
-      "0x44d09fccfe5b4ef3be8397a59d8a9a7028f830e8c32451f8e1a714d3440880f6": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_insuranceIndex",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "_insuranceName",
-            "type": "string"
-          },
-          {
-            "indexed": false,
-            "name": "_insuranceDescription",
-            "type": "string"
-          }
-        ],
-        "name": "OnInsuranceAdded",
-        "type": "event"
-      },
-      "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldRegulator",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newRegulator",
-            "type": "address"
-          }
-        ],
-        "name": "OnRegulatorChanged",
-        "type": "event"
-      },
-      "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldAdmin",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "OnAdminChanged",
-        "type": "event"
-      }
-    },
-    "updated_at": 1495795862473,
+    "unlinked_binary": "0x6060604052346100005760405161049b38038061049b833981016040528051015b5b60008054600160a060020a03191633600160a060020a03161790555b8060019080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061008957805160ff19168380011785556100b6565b828001600101855582156100b6579182015b828111156100b657825182559160200191906001019061009b565b5b506100d79291505b808211156100d357600081556001016100bf565b5090565b50506002805463ffffffff191690555b505b6103a3806100f86000396000f300606060405236156100885763ffffffff60e060020a600035041663031af76b811461008d5780631f6d083c146100ae5780633555169b146100cf57806343d726d6146100f0578063504494c9146100ff5780635eedc8f3146101135780636c70c2e1146101a0578063a1d0827c146101c1578063b764eeca146101d5578063fcdaaea4146101e9575b610000565b346100005761009a6101fd565b604080519115158252519081900360200190f35b346100005761009a61020d565b604080519115158252519081900360200190f35b346100005761009a61021e565b604080519115158252519081900360200190f35b34610000576100fd61022d565b005b34610000576100fd6004351515610273565b005b346100005761012061028c565b604080516020808252835181830152835191928392908301918501908083838215610166575b80518252602083111561016657601f199092019160209182019101610146565b505050905090810190601f1680156101925780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b346100005761009a610329565b604080519115158252519081900360200190f35b34610000576100fd6004351515610333565b005b34610000576100fd6004351515610345565b005b34610000576100fd6004351515610360565b005b60025462010000900460ff165b90565b6002546301000000900460ff165b90565b600254610100900460ff165b90565b6000543373ffffffffffffffffffffffffffffffffffffffff90811691161461025557610000565b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b5b565b6002805462ff0000191662010000831515021790555b50565b604080516020808201835260008252600180548451600282841615610100026000190190921691909104601f81018490048402820184019095528481529293909183018282801561031e5780601f106102f35761010080835404028352916020019161031e565b820191906000526020600020905b81548152906001019060200180831161030157829003601f168201915b505050505090505b90565b60025460ff165b90565b6002805460ff19168215151790555b50565b6002805463ff00000019166301000000831515021790555b50565b6002805461ff001916610100831515021790555b505600a165627a7a72305820688d0e38931b609bfd9155cee8afa4aa6faea12b88d74b59082d4aad118545620029",
+    "events": {},
+    "updated_at": 1495981906933,
     "links": {},
-    "address": "0xcf4297a848d69c9715818b4bf60681de42b34309"
+    "address": "0xb61fe2261ea9027eafa071a131890c330a3fb993"
   }
 };
 
@@ -727,7 +574,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "Insurance";
+  Contract.contract_name   = Contract.prototype.contract_name   = "Device";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -767,6 +614,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.Insurance = Contract;
+    window.Device = Contract;
   }
 })();

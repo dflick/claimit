@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("Claim error: Please call setProvider() first before calling new().");
+      throw new Error("DeviceController error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("Claim error: contract binary not set. Can't deploy new instance.");
+      throw new Error("DeviceController error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("Claim contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of Claim: " + unlinked_libraries);
+      throw new Error("DeviceController contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of DeviceController: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to Claim.at(): " + address);
+      throw new Error("Invalid address passed to DeviceController.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: Claim not deployed or address not set.");
+      throw new Error("Cannot find deployed address: DeviceController not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -350,23 +350,15 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   "default": {
     "abi": [
       {
-        "constant": false,
-        "inputs": [
+        "constant": true,
+        "inputs": [],
+        "name": "getRegulatorInstance",
+        "outputs": [
           {
-            "name": "insurer",
+            "name": "",
             "type": "address"
-          },
-          {
-            "name": "customer",
-            "type": "uint256"
-          },
-          {
-            "name": "insurance",
-            "type": "uint256"
           }
         ],
-        "name": "addClaimReport",
-        "outputs": [],
         "payable": false,
         "type": "function"
       },
@@ -374,10 +366,31 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [],
         "name": "close",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getAdmin",
         "outputs": [
           {
             "name": "",
-            "type": "bool"
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getInsurerRegistryInstance",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
           }
         ],
         "payable": false,
@@ -402,31 +415,35 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
+        "constant": true,
         "inputs": [],
+        "name": "getDeviceRegistryInstance",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
         "payable": false,
-        "type": "constructor"
+        "type": "function"
       },
       {
-        "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
-            "name": "_insurer",
+            "name": "regulatorInstanceAddress",
             "type": "address"
           },
           {
-            "indexed": false,
-            "name": "_customer",
-            "type": "uint256"
+            "name": "deviceRegistryAddress",
+            "type": "address"
           },
           {
-            "indexed": false,
-            "name": "_insurance",
-            "type": "uint256"
+            "name": "insurerRegistryAddress",
+            "type": "address"
           }
         ],
-        "name": "OnAddClaimReport",
-        "type": "event"
+        "payable": false,
+        "type": "constructor"
       },
       {
         "anonymous": false,
@@ -446,30 +463,8 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405234610000575b5b5b60008054600160a060020a03191633600160a060020a03161790555b5b60016002555b5b6101b78061003f6000396000f300606060405263ffffffff60e060020a6000350416633e10e2c7811461003a57806343d726d61461005b5780638f2839701461007c575b610000565b3461000057610059600160a060020a03600435166024356044356100b1565b005b34610000576100686100c3565b604080519115158252519081900360200190f35b3461000057610095600160a060020a03600435166100ef565b60408051600160a060020a039092168252519081900360200190f35b6002805460018181550190555b505050565b6000805433600160a060020a039081169116146100df57610000565b33600160a060020a0316ff5b5b90565b6000805433600160a060020a0390811691161461010b57610000565b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517f0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb69281900390910190a150600054600160a060020a03165b5b9190505600a165627a7a72305820593e41fe653028c1fd8cb53914ca32d612b7d2edb18894745f451a3c9b0055780029",
+    "unlinked_binary": "0x606060405234610000576040516060806103308339810160409081528151602083015191909201515b5b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a03191633600160a060020a03161790555b60028054600160a060020a03808616600160a060020a0319928316179092556003805485841690831617905560048054928416929091169190911790555b5050505b61027d806100b36000396000f3006060604052361561005c5763ffffffff60e060020a6000350416632b12b9e1811461006157806343d726d61461008a5780636e9960c3146100995780637b5e91f5146100c25780638f283970146100eb578063e2e3963b14610120575b610000565b346100005761006e610149565b60408051600160a060020a039092168252519081900360200190f35b3461000057610097610159565b005b346100005761006e610183565b60408051600160a060020a039092168252519081900360200190f35b346100005761006e610193565b60408051600160a060020a039092168252519081900360200190f35b346100005761006e600160a060020a03600435166101a3565b60408051600160a060020a039092168252519081900360200190f35b346100005761006e610241565b60408051600160a060020a039092168252519081900360200190f35b600254600160a060020a03165b90565b60015433600160a060020a0390811691161461017457610000565b33600160a060020a0316ff5b5b565b600154600160a060020a03165b90565b600454600160a060020a03165b90565b60015460009033600160a060020a039081169116146101c157610000565b6001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517f0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb69281900390910190a150600154600160a060020a03165b5b919050565b600354600160a060020a03165b905600a165627a7a723058208b2265f5d12dd4a714bdaf9740cad1f60244d9094ef565e1a7a756eb73ad31200029",
     "events": {
-      "0x9cc1f52cb7130dac80b630f027faa43e02920a524d6a526eb5b4673aae6435af": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_insurer",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_customer",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "name": "_insurance",
-            "type": "uint256"
-          }
-        ],
-        "name": "OnAddClaimReport",
-        "type": "event"
-      },
       "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
         "anonymous": false,
         "inputs": [
@@ -488,8 +483,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1495795862449,
-    "links": {}
+    "updated_at": 1495981906946,
+    "links": {},
+    "address": "0xc5618a6fefca9f6e105c06ac396be1a5b61872f6"
   }
 };
 
@@ -574,7 +570,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "Claim";
+  Contract.contract_name   = Contract.prototype.contract_name   = "DeviceController";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -614,6 +610,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.Claim = Contract;
+    window.DeviceController = Contract;
   }
 })();

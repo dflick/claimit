@@ -1,8 +1,8 @@
 pragma solidity ^0.4.5;
 
-import "Admin.sol";
+import "Mortal.sol";
 
-contract Insurer is Admin 
+contract Insurer is Mortal 
 {
     uint index;
     address account;
@@ -31,6 +31,12 @@ contract Insurer is Admin
         isInsurer
     {
         name = insurerName;
+    }
+
+    function setBusinessID(string insurerBusinessID)
+        isInsurer
+    {
+        businessid = insurerBusinessID;
     }
 
     /*

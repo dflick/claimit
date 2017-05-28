@@ -1,34 +1,87 @@
+// Only insurer can update device statuses
+// Only insurer can add devices
+
 pragma solidity ^0.4.5;
 
-import "Admin.sol";
+import "Mortal.sol";
 
-contract Device is Admin 
+contract Device is Mortal
 {
 	string private imei;
-	string private owner;
-	string private insured;
-	bool private scrap;
+	bool private lost; // got lost
+	bool private stolen; // got stolen
+	bool private broke; // owner broke
+	bool private scrap; // partner scrapped
 
-	function Device(string deviceImei, string deviceOwner, string deviceInsured, bool deviceScrapped)
+	function Device(string deviceImei)
 	{
 		imei = deviceImei;
-		owner = deviceOwner;
-		insured = deviceInsured;
+		lost = false;
+		stolen = false;
+		broke = false;
+		scrap = false;
+	}
+
+	function getImei()
+		constant
+		returns(string)
+	{
+		return imei;
+	}
+
+	/*
+	** SETTERS
+	*/
+
+	function setLost(bool deviceLost)
+	{
+		lost = deviceLost;
+	}
+
+	function setStolen(bool deviceStolen)
+	{
+		stolen = deviceStolen;
+	}
+
+	function setBroke(bool deviceBroken)
+	{
+		broke = deviceBroken;
+	}
+
+	function setScrap(bool deviceScrapped)
+	{
 		scrap = deviceScrapped;
 	}
 
-	function setOwner(string deviceOwner)
+	/*
+	** GETTERS
+	*/
+
+	function getLost()
+		constant
+		returns(bool)
 	{
-		owner = deviceOwner;
+		return lost;
 	}
 
-	function setInsured(string deviceInsured) 
+	function getStolen()
+		constant
+		returns(bool)
 	{
-		insured = deviceInsured;
+		return stolen;
+	}
+	
+	function getBroke()
+		constant
+		returns(bool)
+	{
+		return broke;
 	}
 
-	function setScrapped(string deviceScrapped) 
+	function getScrap()
+		constant
+		returns(bool)
 	{
-		scrap = deviceScrapped;
+		return scrap;
 	}
 }

@@ -9,10 +9,12 @@
 
 pragma solidity ^0.4.5;
 
+import "Mortal.sol";
 import "Admin.sol";
 
-contract Regulator is Admin
+contract Regulator is Mortal
 {
+	address private admin;
 	address private regulator;
 
 	event OnRegulatorChanged(address _oldRegulator, address _newRegulator);
@@ -23,9 +25,10 @@ contract Regulator is Admin
 		_;
 	}
 	
-	function Regulator() 
+	function Regulator(address adminInstanceAddress) 
 	{
-		regulator = tx.origin;
+		regulator = msg.sender;
+		admin = Admin(adminInstanceAddress);
 	}
 
 	function getRegulator() 

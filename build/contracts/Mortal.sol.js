@@ -358,80 +358,14 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
-        "constant": false,
-        "inputs": [],
-        "name": "getAdmin",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "changeAdmin",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
         "inputs": [],
         "payable": false,
         "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldAdmin",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "OnAdminChanged",
-        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405234610000575b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b6101a9806100386000396000f300606060405263ffffffff60e060020a60003504166343d726d6811461003a5780636e9960c3146100495780638f28397014610072575b610000565b34610000576100476100a7565b005b34610000576100566100d1565b60408051600160a060020a039092168252519081900360200190f35b3461000057610056600160a060020a03600435166100e1565b60408051600160a060020a039092168252519081900360200190f35b60005433600160a060020a039081169116146100c257610000565b33600160a060020a0316ff5b5b565b600054600160a060020a03165b90565b6000805433600160a060020a039081169116146100fd57610000565b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517f0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb69281900390910190a150600054600160a060020a03165b5b9190505600a165627a7a723058209b1738d4c6bdda25422fc2a16f9e6b2287b1904a1f58cb8f8c050b3cc6266b680029",
-    "events": {
-      "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldAdmin",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "OnAdminChanged",
-        "type": "event"
-      }
-    },
-    "updated_at": 1495795862549,
+    "unlinked_binary": "0x606060405234610000575b60008054600160a060020a03191633600160a060020a03161790555b5b609e806100356000396000f300606060405263ffffffff60e060020a60003504166343d726d681146022575b6000565b34600057602c602e565b005b6000543373ffffffffffffffffffffffffffffffffffffffff9081169116146054576000565b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b5b5600a165627a7a723058206a6c1fb88d1d2712976635c22b45b68da7aec375464d656c53112fcf336166890029",
+    "events": {},
+    "updated_at": 1495981906976,
     "links": {}
   }
 };

@@ -378,37 +378,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
       {
         "constant": true,
         "inputs": [],
-        "name": "getAdmin",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "changeAdmin",
-        "outputs": [
-          {
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
         "name": "getRegulator",
         "outputs": [
           {
@@ -420,7 +389,12 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "function"
       },
       {
-        "inputs": [],
+        "inputs": [
+          {
+            "name": "adminInstanceAddress",
+            "type": "address"
+          }
+        ],
         "payable": false,
         "type": "constructor"
       },
@@ -440,26 +414,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         ],
         "name": "OnRegulatorChanged",
         "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldAdmin",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "OnAdminChanged",
-        "type": "event"
       }
     ],
-    "unlinked_binary": "0x606060405234610000575b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a03191632600160a060020a03161790555b5b6102cb806100536000396000f300606060405263ffffffff60e060020a60003504166308528190811461005057806343d726d6146100855780636e9960c3146100945780638f283970146100bd578063f7e317f4146100f2575b610000565b3461000057610069600160a060020a036004351661011b565b60408051600160a060020a039092168252519081900360200190f35b34610000576100926101b9565b005b34610000576100696101e3565b60408051600160a060020a039092168252519081900360200190f35b3461000057610069600160a060020a03600435166101f3565b60408051600160a060020a039092168252519081900360200190f35b346100005761006961028f565b60408051600160a060020a039092168252519081900360200190f35b60015460009033600160a060020a0390811691161461013957610000565b6001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517fc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe9281900390910190a150600154600160a060020a03165b5b919050565b60005433600160a060020a039081169116146101d457610000565b33600160a060020a0316ff5b5b565b600054600160a060020a03165b90565b6000805433600160a060020a0390811691161461020f57610000565b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517f0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb69281900390910190a150600054600160a060020a03165b5b919050565b600154600160a060020a03165b905600a165627a7a72305820a6c3ec8f87e6b2422d5e7d2c4c82bc0e4f2104b37cef4c16bd1af6d43813449e0029",
+    "unlinked_binary": "0x6060604052346100005760405160208061022783398101604052515b5b60008054600160a060020a03191633600160a060020a03161790555b60028054600160a060020a03338116600160a060020a03199283161790925560018054928416929091169190911790555b505b6101ad8061007a6000396000f300606060405263ffffffff60e060020a60003504166308528190811461003a57806343d726d61461006f578063f7e317f41461007e575b610000565b3461000057610053600160a060020a03600435166100a7565b60408051600160a060020a039092168252519081900360200190f35b346100005761007c610145565b005b3461000057610053610171565b60408051600160a060020a039092168252519081900360200190f35b60025460009033600160a060020a039081169116146100c557610000565b6002805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517fc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe9281900390910190a150600254600160a060020a03165b5b919050565b60005433600160a060020a0390811691161461016057610000565b600054600160a060020a0316ff5b5b565b600254600160a060020a03165b905600a165627a7a72305820ff0454d22d60b387e25f91c83afcfa1b60562545521901bd137f6ba437de0cae0029",
     "events": {
       "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
         "anonymous": false,
@@ -477,28 +434,11 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         ],
         "name": "OnRegulatorChanged",
         "type": "event"
-      },
-      "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "name": "_oldAdmin",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "name": "_newAdmin",
-            "type": "address"
-          }
-        ],
-        "name": "OnAdminChanged",
-        "type": "event"
       }
     },
-    "updated_at": 1495797194095,
+    "updated_at": 1495981906982,
     "links": {},
-    "address": "0x4ea5cd43e37aa3d838c78af6f6b697e05a812523"
+    "address": "0xf53c35d78c7ecd48556c0a24f56d4f53a2f61659"
   }
 };
 
