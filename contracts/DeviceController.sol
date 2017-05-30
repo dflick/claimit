@@ -9,14 +9,20 @@ import "Device.sol";
 
 contract DeviceController is Admin
 {
+	address private controller;
 	address private regulator;
 	address private deviceRegistry;
 	address private insurerRegistry;
 
-	event onAddDeviceClaim(string _imei, bool _lost, bool _stolen, bool _broke, bool scrap);
+	modifier isInsurer()
+	{
+		if(!InsurerRegistry(insurerRegistry).isInsurer()) throw;
+		_;
+	}
 
 	function DeviceController(address regulatorInstanceAddress, address deviceRegistryAddress, address insurerRegistryAddress) 
 	{
+		controller = this;
 		regulator = regulatorInstanceAddress;
 		deviceRegistry = deviceRegistryAddress;
 		insurerRegistry = insurerRegistryAddress;
@@ -43,11 +49,20 @@ contract DeviceController is Admin
 		return regulator;
 	}
 
-	function addDeviceClaim(string imei, bool deviceLost, bool deviceStolen, bool deviceBroken, bool deviceScrapped)
+	function getControllerInstance()
+		constant
+		returns(address)
 	{
-		// update device device status, only insurer can do that
-		// do we care if device status is already true?
-		// trigger an event
+		return controller;
+	}
 
+	function addDevice(string imei)
+		isInsurer
+		returns(bool)
+	{	
+		// check if defice in registry
+
+		// if device not in registry create new Device
+		// if device not in registry add device to registry
 	}
 }

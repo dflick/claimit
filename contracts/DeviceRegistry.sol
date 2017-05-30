@@ -6,6 +6,7 @@ import "InsurerRegistry.sol";
 
 contract DeviceRegistry is Mortal
 {
+	address controller;
 	address[] private devices;
 	// imei => Device instance address
 	mapping(string => address) deviceInstances;
@@ -19,9 +20,15 @@ contract DeviceRegistry is Mortal
 
 	function DeviceRegistry(address insurerRegistryInstanceAddress)
 	{
-
+		controller = msg.sender;
 		ir = InsurerRegistry(insurerRegistryInstanceAddress);
 	}
+
+	/*
+	** FIX THIS TO TAKE IN INSTANCE ADDRESS.
+	** ONLY ADD INSTANCE TO REGISTRY HERE.
+	** CONTROLLER HANDLES REGISTRY AND DEVICE UPDATES.
+	*/
 
 	function addDevice(string imei) 
 		isInsurer
