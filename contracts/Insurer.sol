@@ -4,24 +4,20 @@ import "Mortal.sol";
 
 contract Insurer is Mortal 
 {
-    // ADD CONTROLLER ATTRIBUTE
-    
-    uint index;
-    address account;
-    string name;
-    string businessid;
+    address private controller;
+    address private account;
+    string private name;
+    string private businessid;
 
-    modifier isInsurer() 
+    modifier isController() 
     {
-        if(msg.sender != account) throw;
+        if(msg.sender != controller) throw;
         _;
     }
    
-    function Insurer(uint x, address insurerAddress, string insurerName, string insurerBusinessID) 
+    function Insurer(address insurerAddress, string insurerName, string insurerBusinessID) 
     {
-        // SET CONTROLLER
-
-        index = x;
+        controller = msg.sender;
         account = insurerAddress;
         name = insurerName;
         businessid = insurerBusinessID;
@@ -32,13 +28,13 @@ contract Insurer is Mortal
     */
 
     function setName(string insurerName)
-        isInsurer
+        isController
     {
         name = insurerName;
     }
 
     function setBusinessID(string insurerBusinessID)
-        isInsurer
+        isController
     {
         businessid = insurerBusinessID;
     }

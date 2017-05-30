@@ -20,7 +20,7 @@ contract Admin is Mortal
 		admin = msg.sender;
 	}
 
-	function changeAdmin(address newAdmin) 
+	function setAdmin(address newAdmin) 
 		isAdmin 
 		returns(address) 
 	{
@@ -29,16 +29,16 @@ contract Admin is Mortal
 		return admin;
 	}
 
-	function close() 
-		isAdmin 
-	{
-		selfdestruct(msg.sender);
-	}
-
 	function getAdmin() 
 		constant
 		returns(address) 
 	{
 		return admin;
+	}
+
+	function close() 
+		isAdmin 
+	{
+		selfdestruct(msg.sender);
 	}
 }

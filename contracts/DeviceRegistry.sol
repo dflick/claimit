@@ -7,7 +7,7 @@ import "InsurerRegistry.sol";
 
 contract DeviceRegistry is Mortal
 {
-	Admin admin;
+	Admin private admin;
 	address private controller;
 
 	address[] private devices;
@@ -26,6 +26,13 @@ contract DeviceRegistry is Mortal
 		controller = msg.sender;
 	}
 
+	function addDevice(string imei, address deviceInstanceAddress) 
+		isController
+	{
+		devices.push(deviceInstanceAddress);
+		deviceInstances[imei] = deviceInstanceAddress;
+	}
+
 	/*
 	** Only admin can set controller with direct contract call
 	** that comes through existing (e.g. new controller contract).
@@ -37,23 +44,11 @@ contract DeviceRegistry is Mortal
 		controller = msg.sender;
 	}
 
-	function addDevice(string imei, address deviceInstanceAddress) 
-		isController
-	{
-		devices.push(deviceInstanceAddress);
-		deviceInstances[imei] = deviceInstanceAddress;
-	}
-
-	function deviceExists(address deviceInstance) 
+	function getController()
 		constant
-		returns(bool)
+		returns(address)
 	{
-		uint num = devices.length;
-		for(uint i=0; i<num; i++) 
-		{
-			if(devices[i] == deviceInstance) return true;
-		}
-		return false;
+		return controller;
 	}
 
 	function getDevice(string imei)

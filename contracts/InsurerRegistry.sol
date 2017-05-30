@@ -1,60 +1,61 @@
 pragma solidity ^0.4.5;
 
+import "Admin.sol";
 import "Mortal.sol";
 import "Regulator.sol";
 import "Insurer.sol";
 
 contract InsurerRegistry is Mortal 
 {
-	Regulator private r;
-	address[] insurers;
-	// insurers address => insurers instance
+	Admin private admin;
+	address private controller;
+
+	address[] private insurers;
+	// insurer's address => insurer's instance
 	mapping (address => address) insurerInstances; 
 
-	modifier isRegulator()
+	modifier isController()
 	{
-		if(msg.sender != r.getRegulator()) throw;
+		if(controller != msg.sender) throw;
 		_;
 	}
 
-	function getRegulator()
-		returns(address) 
+	function InsurerRegistry(address adminInstanceAddress) 
 	{
-		return r.getRegulator();
+		admin = Admin(adminInstanceAddress);
+		controller = msg.sender;
 	}
 
-	function InsurerRegistry(address regulatorInstanceAddress) 
+	function addInsurer(address insurerAddress, address insurerInstanceAddress)
+		isController
 	{
-		r = Regulator(regulatorInstanceAddress);
+		insurerInstances[insurerAddress] = insurerInstanceAddress;
+		insurers.push(insurerInstanceAddress);
 	}
 
-	function addInsurer(address insurerAddress, string insurerName, string insurerBusinessID)
-		isRegulator
+	/*
+	** Only admin can set controller with direct contract call
+	** that comes through existing (e.g. new controller contract).
+	*/ 
+
+	function setController()
 	{
-		Insurer insurer = new Insurer(insurers.length, insurerAddress, insurerName, insurerBusinessID);
-		insurerInstances[insurerAddress] = insurer;
-		insurers.push(insurer);
+		if(admin.getAdmin() != tx.origin) throw;
+		controller = msg.sender;
 	}
 
-	function getInsurerInstanceByAddress(address insurerAddress)
+	function getController()
+		constant
+		returns(address)
+	{
+		return controller;
+	}
+
+	function getInsurer(address insurerAddress)
 		constant
 		returns(address)
 	{
 		return insurerInstances[insurerAddress];
-	}
-
-	function getInsurerInstanceByIndex(uint index) 
-		constant
-		returns(address)
-	{
-		return insurers[index];
-	}
-
-	function isInsurer()
-		returns(bool)
-	{
-		if(insurerInstances[tx.origin] != 0x0) return true;
-		return false;
 	}
 
 	function getInsurers()

@@ -10,7 +10,6 @@
 pragma solidity ^0.4.5;
 
 import "Mortal.sol";
-import "Admin.sol";
 
 contract Regulator is Mortal
 {

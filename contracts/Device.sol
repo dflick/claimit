@@ -1,13 +1,10 @@
-// Only registry can update device statuses
-// Only registry can add devices
-
 pragma solidity ^0.4.5;
 
 import "Mortal.sol";
 
 contract Device is Mortal
 {
-	address controller;
+	address private controller;
 	string private imei;
 	bool private lost; // got lost
 	bool private stolen; // got stolen
@@ -18,7 +15,7 @@ contract Device is Mortal
 	{
 		if(controller != msg.sender) throw;
 		_;
-	}	
+	}
 
 	function Device(string deviceImei)
 	{
@@ -28,13 +25,6 @@ contract Device is Mortal
 		stolen = false;
 		broke = false;
 		scrap = false;
-	}
-
-	function getImei()
-		constant
-		returns(string)
-	{
-		return imei;
 	}
 
 	/*
@@ -68,6 +58,13 @@ contract Device is Mortal
 	/*
 	** GETTERS
 	*/
+
+	function getImei()
+		constant
+		returns(string)
+	{
+		return imei;
+	}
 
 	function getLost()
 		constant

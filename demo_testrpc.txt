@@ -16,52 +16,20 @@ DeviceController.deployed().getRegulatorInstance.call()
 **                                                                            **
 *******************************************************************************/
 
-InsurerRegistry.deployed().addInsurer("0x914d5475cc8df77055fb8f21d822b4b8663a6f13", "OP", "1234567-8")
-InsurerRegistry.deployed().addInsurer("0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7", "IF", "2345678-9")
-InsurerRegistry.deployed().addInsurer("0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e", "Nordea", "3456789-0")
+DeviceController.deployed().addInsurer("0x914d5475cc8df77055fb8f21d822b4b8663a6f13", "OP", "1234567-8")
+DeviceController.deployed().addInsurer("0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7", "IF", "2345678-9")
+DeviceController.deployed().addInsurer("0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e", "Nordea", "3456789-0")
 
         10        20        30        40        50        60        70        80
 /*******************************************************************************
 **                                                                            **
-** CHECK THAT INSURERS RETURN TRUE (EXISTS)                                   **
+** CHECK THAT INSURERS EXIST                                                  **
 **                                                                            **
 *******************************************************************************/
 
-InsurerRegistry.deployed().isInsurer.call({from:"0x914d5475cc8df77055fb8f21d822b4b8663a6f13"})
-InsurerRegistry.deployed().isInsurer.call({from:"0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7"})
-InsurerRegistry.deployed().isInsurer.call({from:"0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e"})
-
-        10        20        30        40        50        60        70        80
-/*******************************************************************************
-**                                                                            **
-** CHECK THAT NON-INSURERS RETURN FALSE (DON'T EXIST)                         **
-**                                                                            **
-*******************************************************************************/
-
-InsurerRegistry.deployed().insurerExists.call({from:"0xde00963c3de0f8be755ef3cde96ecfad55e6f245"})
-InsurerRegistry.deployed().insurerExists.call()
-
-        10        20        30        40        50        60        70        80
-/*******************************************************************************
-**                                                                            **
-** GET INSURER BY INSURER ADDRESS                                             **
-**                                                                            **
-*******************************************************************************/
-
-InsurerRegistry.deployed().getInsurerInstanceByAddress.call("0x914d5475cc8df77055fb8f21d822b4b8663a6f13")
-InsurerRegistry.deployed().getInsurerInstanceByAddress.call("0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7")
-InsurerRegistry.deployed().getInsurerInstanceByAddress.call("0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e")
-
-        10        20        30        40        50        60        70        80
-/*******************************************************************************
-**                                                                            **
-** GET INSURERS BY INSURER INDEX                                              **
-**                                                                            **
-*******************************************************************************/
-
-InsurerRegistry.deployed().getInsurerInstanceByIndex.call(0)
-InsurerRegistry.deployed().getInsurerInstanceByIndex.call(1)
-InsurerRegistry.deployed().getInsurerInstanceByIndex.call(2)
+InsurerRegistry.deployed().getInsurer("0x914d5475cc8df77055fb8f21d822b4b8663a6f13")
+InsurerRegistry.deployed().getInsurer("0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7")
+InsurerRegistry.deployed().getInsurer("0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e")
 
         10        20        30        40        50        60        70        80
 /*******************************************************************************
@@ -79,10 +47,10 @@ InsurerRegistry.deployed().getInsurers()
 **                                                                            **
 *******************************************************************************/
 
-DeviceRegistry.deployed().addDevice.call("01234", {from:"0xb91250ea45e1b99258d56f96fdaf3fb5f64fbb5a"})
-DeviceRegistry.deployed().addDevice("12345", {from:"0x914d5475cc8df77055fb8f21d822b4b8663a6f13"})
-DeviceRegistry.deployed().addDevice("23456", {from:"0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7"})
-DeviceRegistry.deployed().addDevice("34567", {from:"0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e"})
+DeviceController.deployed().addDevice.call("01234", {from:"0xb91250ea45e1b99258d56f96fdaf3fb5f64fbb5a"})
+DeviceController.deployed().addDevice("12345", {from:"0x914d5475cc8df77055fb8f21d822b4b8663a6f13"})
+DeviceController.deployed().addDevice("23456", {from:"0xaca2f6fc055718a1f6366c37f7e398a3c6eb8cf7"})
+DeviceController.deployed().addDevice("34567", {from:"0x333a43b01acd7915bfdf1c12e0ef39d2963b4f8e"})
 
         10        20        30        40        50        60        70        80
 /*******************************************************************************
