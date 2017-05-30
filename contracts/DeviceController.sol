@@ -10,9 +10,9 @@ import "Device.sol";
 contract DeviceController is Admin
 {
 	address private controller;
-	address private regulator;
-	address private deviceRegistry;
-	address private insurerRegistry;
+	Regulator private regulator;
+	DeviceRegistry private deviceRegistry;
+	InsurerRegistry private insurerRegistry;
 
 	modifier isInsurer()
 	{
@@ -23,9 +23,11 @@ contract DeviceController is Admin
 	function DeviceController(address regulatorInstanceAddress, address deviceRegistryAddress, address insurerRegistryAddress) 
 	{
 		controller = this;
-		regulator = regulatorInstanceAddress;
-		deviceRegistry = deviceRegistryAddress;
-		insurerRegistry = insurerRegistryAddress;
+		regulator = Regulator(regulatorInstanceAddress);
+		deviceRegistry = DeviceRegistry(deviceRegistryAddress);
+		insurerRegistry = InsurerRegistry(insurerRegistryAddress);
+
+		deviceRegistry.setController();
 	}
 
 	function getInsurerRegistryInstance()
@@ -60,9 +62,19 @@ contract DeviceController is Admin
 		isInsurer
 		returns(bool)
 	{	
-		// check if defice in registry
+		// check if device exists in registry
+		if(deviceRegistry.getDevice(imei) != 0x0) return false;
 
-		// if device not in registry create new Device
-		// if device not in registry add device to registry
+		// device does not exist in registry
+
+		Device d = new Device(imei);
+		deviceRegistry.addDevice(imei, d);
+		return true;
+	}
+
+	function setControllerToDeviceRegistry()
+		isAdmin
+	{
+		deviceRegistry.setController();
 	}
 }

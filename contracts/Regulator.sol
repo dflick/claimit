@@ -14,7 +14,6 @@ import "Admin.sol";
 
 contract Regulator is Mortal
 {
-	address private admin;
 	address private regulator;
 
 	event OnRegulatorChanged(address _oldRegulator, address _newRegulator);
@@ -28,7 +27,6 @@ contract Regulator is Mortal
 	function Regulator(address adminInstanceAddress) 
 	{
 		regulator = msg.sender;
-		admin = Admin(adminInstanceAddress);
 	}
 
 	function getRegulator() 

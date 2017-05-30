@@ -1,47 +1,59 @@
 pragma solidity ^0.4.5;
 
+import "Admin.sol";
 import "Mortal.sol";
 import "Device.sol";
 import "InsurerRegistry.sol";
 
 contract DeviceRegistry is Mortal
 {
-	address controller;
+	Admin admin;
+	address private controller;
+
 	address[] private devices;
 	// imei => Device instance address
 	mapping(string => address) deviceInstances;
-	InsurerRegistry private ir;
 
-	modifier isInsurer()
+	modifier isController()
 	{
-		if(!ir.isInsurer()) throw;
+		if(msg.sender != controller) throw;
 		_;
 	}
 
-	function DeviceRegistry(address insurerRegistryInstanceAddress)
+	function DeviceRegistry(address adminInstanceAddress)
 	{
+		admin = Admin(adminInstanceAddress);
 		controller = msg.sender;
-		ir = InsurerRegistry(insurerRegistryInstanceAddress);
 	}
 
 	/*
-	** FIX THIS TO TAKE IN INSTANCE ADDRESS.
-	** ONLY ADD INSTANCE TO REGISTRY HERE.
-	** CONTROLLER HANDLES REGISTRY AND DEVICE UPDATES.
-	*/
+	** Only admin can set controller with direct contract call
+	** that comes through existing (e.g. new controller contract).
+	*/ 
 
-	function addDevice(string imei) 
-		isInsurer
-		returns(bool successful)
+	function setController()
 	{
-		successful = false;
-		if(deviceInstances[imei] != 0x0) return successful;
+		if(admin.getAdmin() != tx.origin) throw;
+		controller = msg.sender;
+	}
 
-		Device d = new Device(imei);
-		devices.push(d);
-		deviceInstances[imei] = d;
-		successful = true;
-		return successful;
+	function addDevice(string imei, address deviceInstanceAddress) 
+		isController
+	{
+		devices.push(deviceInstanceAddress);
+		deviceInstances[imei] = deviceInstanceAddress;
+	}
+
+	function deviceExists(address deviceInstance) 
+		constant
+		returns(bool)
+	{
+		uint num = devices.length;
+		for(uint i=0; i<num; i++) 
+		{
+			if(devices[i] == deviceInstance) return true;
+		}
+		return false;
 	}
 
 	function getDevice(string imei)

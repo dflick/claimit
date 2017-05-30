@@ -18,11 +18,7 @@ contract Device is Mortal
 	{
 		if(controller != msg.sender) throw;
 		_;
-	}
-
-	/*
-	** CHECK OUT DEPLOY SEQUENCE. IS IT POSSIBLE TO SET CONTROLLER AT THIS POINT
-	*/	
+	}	
 
 	function Device(string deviceImei)
 	{

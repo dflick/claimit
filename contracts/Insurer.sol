@@ -4,6 +4,8 @@ import "Mortal.sol";
 
 contract Insurer is Mortal 
 {
+    // ADD CONTROLLER ATTRIBUTE
+    
     uint index;
     address account;
     string name;
@@ -17,6 +19,8 @@ contract Insurer is Mortal
    
     function Insurer(uint x, address insurerAddress, string insurerName, string insurerBusinessID) 
     {
+        // SET CONTROLLER
+
         index = x;
         account = insurerAddress;
         name = insurerName;
