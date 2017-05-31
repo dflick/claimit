@@ -6,7 +6,7 @@ import "InsurerRegistry.sol";
 import "Insurer.sol";
 import "Device.sol";
 
-contract DeviceController
+contract Claimit
 {
 	Regulator private regulator;
 	DeviceRegistry private deviceRegistry;
@@ -24,7 +24,7 @@ contract DeviceController
 		_;
 	}
 
-	function DeviceController(address regulatorInstanceAddress, address deviceRegistryAddress, address insurerRegistryAddress) 
+	function Claimit(address regulatorInstanceAddress, address deviceRegistryAddress, address insurerRegistryAddress) 
 	{
 		regulator = Regulator(regulatorInstanceAddress);
 		deviceRegistry = DeviceRegistry(deviceRegistryAddress);

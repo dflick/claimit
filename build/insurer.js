@@ -33031,12 +33031,11 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	$window.onload = function() {
 		initUtils(web3);
 		setStatus("");
-		var regulator = MobileDevice.deployed();
+		var regulator = Regulator.deployed();
 		$scope.regulatorIndicator = "";
 
 		web3.eth.getAccounts((e, accounts) => {
 			if(accounts.length > 0) {
-
 	   			$scope.accountList = accounts;
 	   			$scope.selectedAccount = $scope.accountList[0];
 
@@ -33065,10 +33064,10 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	$scope.onChangeAccount = function(selectedAccount) {
 		initUtils(web3);
 		setStatus("");
-		var regulator = MobileDevice.deployed();
+		var regulator = Regulator.deployed();
 		$scope.regulatorIndicator = "";
 
-		regulator.getRegulator.call({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
+		regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
 			if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
 
 			$timeout( function() {
@@ -33084,78 +33083,60 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 		});
 	};
 
-	$scope.getInsurer = function(selectedAccount) {
+	$scope.addNewInsurer = function(newAddress, newName) {
 		setStatus("");
-		var insurer = MobileDevice.deployed();
+		var insurer = Claimit.deployed();
 
-		insurer.getInsurer(selectedAccount).then(function(data) {
-			$timeout(function() {
-				$scope.selectedAccountName = data[2];
-				$scope.selectedAccountIndex = data[1];
+		insurer.addInsurer(newAddress, newName, newBusinessID, { from: $scope.curRegulator, gas: 3000000 }).then( function(txnHash) {
+			return web3.eth.getTransactionReceiptMined(txnHash).then( function(receipt) {
+				setStatus("New Insurer added: " + newName);
+			}).catch( function(e) {
+				setStatus("Transaction failed.");
+				console.error(e);
 			});
-		}).catch(function(e) {
+		}).catch( function(e) {
+			setStatus("Adding Insurer failed.");
 			console.error(e);
 		});
 	}
 
-	$scope.addNewInsurer = function(newAddress, newName) {
-		setStatus("");
-		var insurer = MobileDevice.deployed();
-
-		insurer.insurerExists.call(newAddress).then(function(exists) {
-			if(exists) throw Error("Insurer exists already");
-
-			insurer.addInsurer(newAddress, newName, { from: $scope.curRegulator, gas: 3000000 }).then( function(txnHash) {
-				return web3.eth.getTransactionReceiptMined(txnHash).then( function(receipt) {
-					setStatus("New Insurer added: " + newName);
-				}).catch( function(e) {
-					setStatus("Transaction failed.");
-					console.error(e);
-				});
-			}).catch( function(e) {
-				setStatus("Adding Insurer failed.");
-				console.error(e);
-			});
-		}).catch(function(e) {
-			setStatus("Insurer exists already");
-			console.error(e);
-		})
-	}
-
 	$scope.listInsurers = function() {
 		setStatus("");
-		var insurer = MobileDevice.deployed();
+		var insurerRegistry = InsurerRegistry.deployed();
+
 		$scope.insurerIndex = 0;
 		$scope.insurers = [];
 
-		/*
-		** Set the header row into table
-		*/ 
+		// Set the header row into table
+
 		$timeout( function() {
 			$scope.insurers.push({
-				insurerId: "Insurer index",
 				insurerAddress: "Insurer address",
 				insurerName: "Insurer name"
 			});
 		});
 
-		insurer.getNextIndex.call().then( function(nextId) {
-			for (var i = 1; i < nextId; i++) {
-				$scope.insurerIndex++; // my ids in contract Insurance start from 1
-				insurer.getInsurerAtX.call($scope.insurerIndex).then( function(values) {					
-					$timeout( function() {
-						$scope.insurers.push({
-							insurerId: values[0],
-							insurerAddress: values[1],
-							insurerName: values[2]
+		insurerRegistry.getInsurers().then(function(reg) {
+
+			for(var i=0; i<reg.length; i++) {
+				// this has to be constant for some reason
+				const insurer = Insurer.at(reg[i]);
+
+				insurer.getAccount().then(function(acc) {
+					return insurer.getName().then(function(nm) {
+						$timeout(function() {
+							$scope.insurers.push({
+								insurerAddress: acc,
+								insurerName: nm
+							});
 						});
 					});
-				}).catch( function(e) {
+				}).catch(function(e) {
 					console.error(e);
 				});
 			}
 			return $scope.insurers;
-		}).catch( function(e) {
+		}).catch(function(e) {
 			console.error(e);
 		});
 	}

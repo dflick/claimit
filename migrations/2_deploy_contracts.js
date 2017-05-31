@@ -5,7 +5,7 @@ module.exports = function(deployer) {
 		return deployer.deploy(Regulator, Admin.address).then(function() {
 			return deployer.deploy(InsurerRegistry, Admin.address).then(function() {
 				return deployer.deploy(DeviceRegistry, Admin.address).then(function() {
-					return deployer.deploy(DeviceController, Regulator.address, DeviceRegistry.address, InsurerRegistry.address);
+					return deployer.deploy(Claimit, Regulator.address, DeviceRegistry.address, InsurerRegistry.address);
 				});
 			});
 		});

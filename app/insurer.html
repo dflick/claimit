@@ -24,7 +24,9 @@
   <br><input type="text" id="newAddress" ng-model="newAddress" placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"></input>
   <label for="newName"></label>
   <br><input type="text" id="newName" ng-model="newName" placeholder="e.g., Company name"></input>
-  <br><br><button id="addNewInsurer" ng-click="addNewInsurer(newAddress, newName)">Add Insurer</button>
+  <label for="newBusinessID"></label>
+  <br><input type="text" id="newBusinessID" ng-model="newBusinessID" placeholder="e.g., 1234567-8"></input>
+  <br><br><button id="addNewInsurer" ng-click="addNewInsurer(newAddress, newName, newBusinessID)">Add Insurer</button>
   <button id="listInsurers" ng-click="listInsurers()">List Insurers</button>
   <br>
   <span id="status"></span>

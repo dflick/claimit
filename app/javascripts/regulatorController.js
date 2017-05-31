@@ -14,7 +14,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 
 	$window.onload = function() {
 		initUtils(web3);
-		var regulator = MobileDevice.deployed();
+		var regulator = Regulator.deployed();
 
     	web3.eth.getAccounts((e, accounts) => { 
     		if(accounts.length > 0) {
@@ -22,7 +22,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
     			$scope.selectedAccount = $scope.accountList[0];
 
 				$timeout( function() {
-					regulator.getRegulator.call({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
+					regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
 						if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
 						$timeout( function() {
 							$scope.curRegulator = regulatorAddress;
@@ -45,10 +45,10 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 
 	$scope.onChangeAccount = function(selectedAccount) {
 		initUtils(web3);
-		var regulator = MobileDevice.deployed();
+		var regulator = Regulator.deployed();
 
 		$timeout( function() {
-			regulator.getRegulator.call({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
+			regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
 				if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
 				$timeout( function() {
 					$scope.curRegulator = regulatorAddress;
@@ -63,7 +63,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 	};
 
 	$scope.changeRegulator = function(newRegulator) {
-		var regulator = MobileDevice.deployed();
+		var regulator = Regulator.deployed();
 
 		regulator.changeRegulator(newRegulator, { from: $scope.curRegulator, gas: 3000000 }).then( function(txn) {
 			return web3.eth.getTransactionReceiptMined(txn);
@@ -76,7 +76,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 	};
 
 	$scope.getRegulator = function() {
-		var regulator = MobileDevice.deployed();
+		var regulator = Regulator.deployed();
 		$scope.theRegulator = [];
 
 		/*

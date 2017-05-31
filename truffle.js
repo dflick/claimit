@@ -2,7 +2,6 @@ module.exports = {
   build: {
     "index.html": "index.html",
     "insurer.html": "insurer.html",
-    "insurance.html": "insurance.html",
     "mobiledevice.html": "mobiledevice.html",
     "app.js": [
       "javascripts/app.js"
@@ -16,11 +15,6 @@ module.exports = {
       "javascripts/_vendor/angular.js",
       "javascripts/utils.js",
       "javascripts/insurerController.js"
-    ],
-    "insurance.js": [
-      "javascripts/_vendor/angular.js",
-      "javascripts/utils.js",
-      "javascripts/insuranceController.js"
     ],
     "mobiledevice.js": [
       "javascripts/_vendor/angular.js",
