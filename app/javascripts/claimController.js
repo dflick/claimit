@@ -1,12 +1,13 @@
-var app = angular.module('mobileDeviceApp', []);
+var app = angular.module('claimitApp', []);
 
 app.config(function($locationProvider) {
 	$locationProvider.html5Mode(true);
 });
 
-app.controller("mobileDeviceController",  ['$scope', '$location', '$http', '$q', '$window', '$timeout', function($scope, $location, $http, $q, $window, $timeout) {
+app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$window', '$timeout', function($scope, $location, $http, $q, $window, $timeout) {
 
 	$scope.curInsurer = "";
+	$scope.curInsurerInstance = "";
 	$scope.mobiles = [];
 	$scope.deviceEvents = "";
 	$scope.accountList = [];
@@ -15,66 +16,81 @@ app.controller("mobileDeviceController",  ['$scope', '$location', '$http', '$q',
 
 	$window.onload = function() {
 		initUtils(web3);
-		var insurer = MobileDevice.deployed();
+		$scope.curInsurer = "";
+		$scope.curInsurerInstance = "";
+		var insurerRegistry = InsurerRegistry.deployed();
 
     	web3.eth.getAccounts((e, accounts) => { 
-    		if(accounts.length > 0) {
-	   			$scope.accountList = accounts;
-	   			$scope.selectedAccount = $scope.accountList[0];
 
-//				$timeout( function() {
-					insurer.insurerExists.call($scope.selectedAccount).then( function(exists) {
-						if(!exists) throw Error("Only Insurer is allowed to add devices");
+    		if(accounts.length > 0) {
+
+    			$timeout(function(){
+		   			$scope.accountList = accounts;
+		   			$scope.selectedAccount = $scope.accountList[0];
+
+					insurerRegistry.getInsurer($scope.selectedAccount).then( function(instanceAddr) {
+						
+						if(instanceAddr == 0x0) {
+							console.log("not insurer");
+							return;
+						}
+
 						$timeout( function() {
 							$scope.curInsurer = $scope.selectedAccount;
+							$scope.curInsurerInstance = instanceAddr;
+							$scope.getInsurer();
 						});
+
 					}).catch( function(e) {
-						$timeout( function() {
-							$scope.curInsurer = "Only Insurer is allowed to add devices";
-						});
 						console.error(e);
 					});
-//				});
-			} else {
-				$timeout( function() {
-					$scope.curInsurer = "Insurer needed";
 				});
+
+			} else {
+				throw Error("No account");
 			}
-			$timeout(function() {
-				$scope.getInsurer();
-			});
         });
 	}
 
 	$scope.onChangeAccount = function(selectedAccount) {
 		initUtils(web3);
-		var insurer = MobileDevice.deployed();
+		$scope.curInsurer = "";
+		$scope.curInsurerInstance = "";
+		var insurerRegistry = InsurerRegistry.deployed();
 
-		$timeout( function() {
-			insurer.insurerExists.call($scope.selectedAccount).then( function(exists) {
-				if(!exists) throw Error("Only Insurer is allowed to add devices");
-				$timeout( function() {
-					$scope.curInsurer = $scope.selectedAccount;
-				});
-			}).catch( function(e) {
-				$timeout( function() {
-					$scope.curInsurer = "Only Insurer is allowed to add devices";
-				});
-				console.error(e);
+		insurerRegistry.getInsurer($scope.selectedAccount).then( function(instanceAddr) {
+			
+			if(instanceAddr == 0x0) {
+				console.log("not insurer");
+				return; 
+			}
+
+			$timeout( function() {
+				$scope.curInsurer = $scope.selectedAccount;
+				$scope.curInsurerInstance = instanceAddr;
+				$scope.getInsurer();
 			});
+
+		}).catch( function(e) {
+			console.error(e);
 		});
-		$scope.getInsurer();
 	};
 
 	$scope.getInsurer = function() {
-		var insurer = MobileDevice.deployed();
+		var insurer = Insurer.at($scope.curInsurerInstance);
 		$scope.selectedAccountData = [];
 
-		insurer.getInsurer.call($scope.selectedAccount).then(function(data) {
-			$scope.selectedAccountData.push({
-				index: data[0],
-				address: data[1],
-				name: data[2]
+		insurer.getAccount().then(function(account) {
+			insurer.getName().then(function(name) {
+				return insurer.getBusinessId().then(function(businessid) {
+					$timeout(function() {
+						$scope.selectedAccountData.push({
+							account: account,
+							name: name,
+							bid: businessid
+						});
+					});
+				});
 			});
 			return $scope.selectedAccountData;
 		}).catch(function(e) {
@@ -82,7 +98,10 @@ app.controller("mobileDeviceController",  ['$scope', '$location', '$http', '$q',
 		});
 	}
 
-
+	/*
+	** 31.5.2017 TÄSTÄ ON HYVÄ JATKAA :)
+	*/
+	
 	$scope.addDevice = function(imei, deviceOwner, insuranceOwner, trashed) {
 
 		var device = MobileDevice.deployed();

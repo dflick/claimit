@@ -2,7 +2,7 @@ module.exports = {
   build: {
     "index.html": "index.html",
     "insurer.html": "insurer.html",
-    "mobiledevice.html": "mobiledevice.html",
+    "claim.html": "claim.html",
     "app.js": [
       "javascripts/app.js"
     ],
@@ -16,10 +16,10 @@ module.exports = {
       "javascripts/utils.js",
       "javascripts/insurerController.js"
     ],
-    "mobiledevice.js": [
+    "claim.js": [
       "javascripts/_vendor/angular.js",
       "javascripts/utils.js",
-      "javascripts/mobileDeviceController.js"
+      "javascripts/claimController.js"
     ],
     "node/server.js": [
       "node/prepare.js",

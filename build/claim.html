@@ -8,9 +8,9 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link href="./app.css" rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
-  <script src="./mobiledevice.js"></script>
+  <script src="./claim.js"></script>
 </head>
-<body ng-app="mobileDeviceApp" ng-controller="mobileDeviceController">
+<body ng-app="claimitApp" ng-controller="claimController">
   <label for="accountList">Choose an account to use:</label>
   <select ng-init="selectedAccount" ng-change = "onChangeAccount()" ng-model="selectedAccount" ng-options="account for account in accountList track by account"></select> {{ selectedAccountData[0].name }}
   <hr>
