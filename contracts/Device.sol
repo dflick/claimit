@@ -17,14 +17,14 @@ contract Device is Mortal
 		_;
 	}
 
-	function Device(string deviceImei)
+	function Device(string deviceImei, bool deviceLost, bool deviceStolen, bool deviceBroke, bool deviceScrap)
 	{
 		controller = msg.sender;
 		imei = deviceImei;
-		lost = false;
-		stolen = false;
-		broke = false;
-		scrap = false;
+		lost = deviceLost;
+		stolen = deviceStolen;
+		broke = deviceBroke;
+		scrap = deviceScrap;
 	}
 
 	/*

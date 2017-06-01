@@ -33024,7 +33024,7 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 
 	$scope.curInsurer = "";
 	$scope.curInsurerInstance = "";
-	$scope.mobiles = [];
+	$scope.mobileClaims = [];
 	$scope.deviceEvents = "";
 	$scope.accountList = [];
 	$scope.selectedAccount = "";
@@ -33039,12 +33039,12 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
     	web3.eth.getAccounts((e, accounts) => { 
 
     		if(accounts.length > 0) {
+
     			$timeout(function(){
 		   			$scope.accountList = accounts;
 		   			$scope.selectedAccount = $scope.accountList[0];
 
 					insurerRegistry.getInsurer($scope.selectedAccount).then( function(instanceAddr) {
-						console.log("onload: " + instanceAddr);
 						
 						if(instanceAddr == 0x0) {
 							console.log("not insurer");
@@ -33056,10 +33056,12 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 							$scope.curInsurerInstance = instanceAddr;
 							$scope.getInsurer();
 						});
+
 					}).catch( function(e) {
 						console.error(e);
 					});
 				});
+
 			} else {
 				throw Error("No account");
 			}
@@ -33084,6 +33086,7 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 				$scope.curInsurerInstance = instanceAddr;
 				$scope.getInsurer();
 			});
+
 		}).catch( function(e) {
 			console.error(e);
 		});
@@ -33111,12 +33114,25 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 		});
 	}
 	
-	$scope.addDevice = function(imei, deviceOwner, insuranceOwner, trashed) {
+	$scope.addDevice = function(imei, deviceLost, deviceStolen, deviceBroke, deviceScrap) {
 
-		var device = MobileDevice.deployed();
-		var trshed = trashed;
-		if(trashed != true) trshed = false;
-		else trshed = trashed;
+		var claimit = Claimit.deployed();
+
+		var lost = "";
+		if(deviceLost != true) lost = false;
+		else lost = deviceLost;
+
+		var stolen = "";
+		if(deviceStolen != true) stolen = false;
+		else stolen = deviceStolen;		
+
+		var broke = "";
+		if(deviceBroke != true) broke = false;
+		else broke = deviceBroke;
+
+		var scrap = "";
+		if(deviceScrap != true) scrap = false;
+		else scrap = deviceScrap;
 
 		// NOTE TO ME: At this point. If you add a device that exists, transaction dialog in Mist
 		// will inform you that you will run out of gas. So, very misleading which means that I
@@ -33125,83 +33141,134 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 
 		// NOTE TO ME: Any calls that change the state of the contract require a signed transaction. 
 		// Error: invalid address, might be due to lack of account in transaction. Although not sure.
-		device.addDevice(imei, deviceOwner, insuranceOwner, trshed, { from: $scope.curInsurer, gas: 3000000}).then(function(txnHash) {
+		claimit.addDeviceClaim(imei, lost, stolen, broke, scrap, { from: $scope.curInsurer, gas: 3000000}).then(function(txnHash) {
 				// Make sure you have initialized utilities initUtils(web3); in $window.onload function
 			return web3.eth.getTransactionReceiptMined(txnHash).then(function (receipt) {
-				setStatus("Device added: " + imei);
+				setStatus("Claim added: " + imei);
 			}).catch(function (e) {
 				setStatus("Transaction failed");
 				console.error("Transaction failed: " + e);
 			});
 		}).catch(function (e) {
-			setStatus("Error while adding device");
-			console.error("Error while adding device: " + e);
+			setStatus("Error while adding claim");
+			console.error("Error while adding claim: " + e);
 		});
 	}
 
 	$scope.findDevice = function(imei) {
-		var device = MobileDevice.deployed();
-		$scope.mobiles = [];
+		var deviceRegistry = DeviceRegistry.deployed();
+		$scope.mobileClaims = [];
 
 		/*
 		** Set the header row into table
 		*/
 		$timeout(function() {
-			$scope.mobiles.push({
+			$scope.mobileClaims.push({
 				imei: "Imei",
-				owner: "Owner",
-				insured: "Insured",
-				trashed: "Trashed"
+				lost: "Lost",
+				stolen: "Stolen",
+				broke: "Broken",
+				scrap: "Scrapped"
 			});
 		});
 
-		device.getDevice.call(imei).then(function(mobile) {
-			$timeout(function() {
-				$scope.mobiles.push({
-					imei: mobile[0],
-					owner: mobile[1],
-					insured: mobile[2],
-					trashed: mobile[3]
+		deviceRegistry.getDevice(imei).then(function(deviceAddr) {
+
+			if(deviceAddr == 0x0) {
+				console.log("no device " + imei);
+				setStatus("no device " + imei);
+				return;
+			}
+
+			let device = Device.at(deviceAddr);
+
+			return device.getLost().then(function(lostIndicator) {
+				return device.getStolen().then(function(stolenIndicator) {
+					return device.getBroke().then(function(brokeIndicator) {
+						return device.getScrap().then(function(scrapIndicator) {
+							$timeout(function() {
+								$scope.mobileClaims.push({
+									imei: imei,
+									lost: lostIndicator,
+									stolen: stolenIndicator,
+									broke: brokeIndicator,
+									scrap: scrapIndicator
+								});
+							});
+						}).catch(function(e) {
+							console.error(e);
+						});
+					}).catch(function(e) {
+						console.error(e);
+					});
+				}).catch(function(e) {
+					console.error(e);
 				});
+			}).catch(function(e) {
+				console.error(e);
 			});
-			return $scope.mobiles;
 		}).catch(function(e) {
 			console.error(e);
 		});
 	}
 
 	$scope.listDevices = function() {
-		var device = MobileDevice.deployed();
-		$scope.mobiles = [];
+		var deviceRegistry = DeviceRegistry.deployed();
+		$scope.mobileClaims = [];
 
 		/*
 		** Set the header row into table
 		*/
 		$timeout(function() {
-			$scope.mobiles.push({
+			$scope.mobileClaims.push({
 				imei: "Imei",
-				owner: "Owner",
-				insured: "Insured",
-				trashed: "Trashed"
+				lost: "Lost",
+				stolen: "Stolen",
+				broke: "Broken",
+				scrap: "Scrapped"
 			});
 		});
 
-		device.lastIndex.call().then(function(n) {
-			for(i = 0; i <= n; i++) {
-				device.getDeviceX.call(i).then(function(mobile) {
-					$timeout(function() {
-						$scope.mobiles.push({
-							imei: mobile[0],
-							owner: mobile[1],
-							insured: mobile[2],
-							trashed: mobile[3]
+		deviceRegistry.getDevices().then(function(devices) {
+			console.log(devices.length);
+
+			for(var i=0; i<devices.length; i++) {
+				console.log(devices[i]);
+				const device = Device.at(devices[i]);
+
+				device.getImei().then(function(imei) {
+					return device.getLost().then(function(lostIndicator) {
+						return device.getStolen().then(function(stolenIndicator) {
+							return device.getBroke().then(function(brokeIndicator) {
+								return device.getScrap().then(function(scrapIndicator) {
+									$timeout(function() {
+										$scope.mobileClaims.push({
+											imei: imei,
+											lost: lostIndicator,
+											stolen: stolenIndicator,
+											broke: brokeIndicator,
+											scrap: scrapIndicator
+										});
+									});
+								}).catch(function(e) {
+									console.error(e);
+								});
+							}).catch(function(e) {
+								console.error(e);
+							});
+						}).catch(function(e) {
+							console.error(e);
 						});
+					}).catch(function(e) {
+						console.error(e);
 					});
 				}).catch(function(e) {
 					console.error(e);
 				});
 			}
-			return $scope.mobiles;
+
+			return $scope.mobileClaims;
+
 		}).catch(function(e) {
 			console.error(e);
 		});

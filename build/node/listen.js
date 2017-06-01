@@ -1,11 +1,31 @@
 
 
+const Web3 = require("web3");
+
+const Claimit = require(__dirname + "/../contracts/Claimit.sol.js");
+const DeviceRegistry = require(__dirname + "/../contracts/DeviceRegistry.sol.js");
+const InsurerRegistry = require(__dirname + "/../contracts/InsurerRegistry.sol.js");
+const Insurer = require(__dirname + "/../contracts/Insurer.sol.js");
+const Device = require(__dirname + "/../contracts/Device.sol.js");
+
+if (typeof web3 !== 'undefined') {
+	Web3 = new Web3(web3.currentProvider); 
+} else {
+	web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+}
+
+[Claimit, DeviceRegistry, InsurerRegistry, Insurer, Device].forEach(function(contract) {
+	contract.setProvider(web3.currentProvider);
+});
+
+console.log("prepared");
+
 /*
 ** Prepares Web3 and File System.
 */
 
-const Web3 = require("web3");
-const Fs = require("fs");
+//const Web3 = require("web3");
+//const Fs = require("fs");
 
 
 
@@ -14,7 +34,7 @@ const Fs = require("fs");
 */
 
 
-
+/*
 if (typeof web3 !== 'undefined') {
 	// Use the Mist/wallet provider.
 	Web3 = new Web3(web3.currentProvider);
@@ -22,6 +42,7 @@ if (typeof web3 !== 'undefined') {
 	// Use the provider from config.
 	web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 }
+*/
 
 
 
@@ -51,8 +72,8 @@ if (typeof web3 !== 'undefined') {
 
 
 
-const fileAbiMobileDevice = "./mobiledeviceabi.json";
-const fileAddrMobileDevice = "./mobiledeviceaddr.json";
+//const fileAbiMobileDevice = "./mobiledeviceabi.json";
+//const fileAddrMobileDevice = "./mobiledeviceaddr.json";
 //const fileAbiInsurer = "./insurerabi.json";
 //const fileAddrInsurer = "./insureraddr.json";
 
@@ -63,7 +84,7 @@ const fileAddrMobileDevice = "./mobiledeviceaddr.json";
 */
 
 
-
+/*
 function readFile(filename, encoding) {
 	return new Promise(function (resolve, reject) {
 		Fs.readFile(filename, encoding, function(err, res) {
@@ -72,7 +93,7 @@ function readFile(filename, encoding) {
 		});
 	});
 }
-
+*/
 
 
 /*
@@ -83,18 +104,18 @@ function readFile(filename, encoding) {
 
 web3.eth.getAccountsPromise = function() {
     return new Promise(function (resolve, reject) {
-            try {
-                web3.eth.getAccounts(function (error, accounts) {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(accounts);
-                    }
-                });
-            } catch(error) {
-                reject(error);
-            }
-        });
+        try {
+            web3.eth.getAccounts(function (error, accounts) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(accounts);
+                }
+            });
+        } catch(error) {
+            reject(error);
+        }
+    });
 };
 
 
@@ -104,7 +125,7 @@ web3.eth.getAccountsPromise = function() {
 */
 
 
-
+/*
 function readJSON(file) {
 	return readFile(file, 'utf-8').then(function (res) {
 		return JSON.parse(res);
@@ -112,6 +133,7 @@ function readJSON(file) {
 		console.error(err);
 	});
 }
+*/
 
 
 
@@ -120,7 +142,7 @@ function readJSON(file) {
 */
 
 
-
+/*
 function instantiateMobileDevice() {
 	return readJSON(fileAbiMobileDevice).then(function (abi) {
 		return web3.eth.contract(abi);
@@ -136,6 +158,7 @@ function instantiateMobileDevice() {
 		console.error(err);
 	});
 }
+*/
 
 
 
@@ -154,26 +177,26 @@ function instantiateMobileDevice() {
 */
 
 
-
+/*
 web3.eth.getAccountsPromise()
     .then(function (accounts) {
     	console.log("");
     	console.log("Get accounts from Geth client");
-        console.log(web3.eth.accounts);
+        console.log(accounts);
         console.log("");
     })
     .catch(function (err) {
         console.error(err);
     });
 
-
+*/
 
 /*
 ** Instantiate MobileDevice contract.
 */
 
 
-
+/*
 instantiateMobileDevice().then(MobileDevice => {
 	console.log("************************************************");
 	console.log("*                                              *");
@@ -202,46 +225,15 @@ instantiateMobileDevice().then(MobileDevice => {
 }).catch(function(err) {
 	console.error(err);
 });
-
-
-/*
-** Instantiate MobileDevice and start event listener
-** for OnAddDevice()
 */
 
-
-
-instantiateMobileDevice().then(MobileDevice => {
-	MobileDevice.OnAddDevice(
-		{},
-		{ fromBlock: "latest"}
-	).watch( function(err, newEvent) {
-		if(err) {
-			console.error(err);
-		} else {
-			console.log(newEvent);
-		}
-	});
-});
-
-
-
-/*
-** Instantiate MobileDevice and start event listener
-** for OnAddDeviceHistory()
-*/
-
-
-
-instantiateMobileDevice().then(MobileDevice => {
-	MobileDevice.OnAddDeviceHistory(
-		{},
-		{ fromBlock: "latest"}
-	).watch( function(err, newEvent) {
-		if(err) {
-			console.error(err);
-		} else {
-			console.log(newEvent);
-		}
-	});
+Claimit.deployed().onDeviceClaim(
+	{},
+	{ fromBlock: "latest"}
+).watch( function(err, newEvent) {
+	if(err) {
+		console.error(err);
+	} else {
+		console.log(newEvent);
+	}
 });

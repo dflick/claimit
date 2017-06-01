@@ -12,6 +12,8 @@ contract Claimit
 	DeviceRegistry private deviceRegistry;
 	InsurerRegistry private insurerRegistry;
 
+	event onDeviceClaim(uint _timestamp, address _insurer, string _imei, string _claimreason);
+
 	modifier isRegulator()
 	{
 		if(regulator.getRegulator() != msg.sender) throw;
@@ -47,18 +49,55 @@ contract Claimit
 		return true;
 	}
 
-	function addDevice(string imei)
+	function addDeviceClaim(string imei, bool lost, bool stolen, bool broke, bool scrap)
 		isInsurer
-		returns(bool)
+		returns(uint) // 1, new device; 2, existing device; 3, something else
 	{	
-		// check if device exists in registry
-		if(deviceRegistry.getDevice(imei) != 0x0) return false;
+		address imeiAddress = deviceRegistry.getDevice(imei);
+		Device d;
 
-		// device does not exist in registry
+		if(imeiAddress == 0x0)
+		{
+			// Add new device and claim reason
+			d = new Device(imei, lost, stolen, broke, scrap);
+			deviceRegistry.addDevice(imei, d);
 
-		Device d = new Device(imei);
-		deviceRegistry.addDevice(imei, d);
-		return true;
+			if(lost) onDeviceClaim(now, msg.sender, imei, "lost");
+			if(stolen) onDeviceClaim(now, msg.sender, imei, "stolen");
+			if(broke) onDeviceClaim(now, msg.sender, imei, "broke");
+			if(scrap) onDeviceClaim(now, msg.sender, imei, "scrap");
+
+			return 1;
+		}
+		else
+		{
+			// Add claim reason to existing device
+			d = Device(imeiAddress);
+
+			if(lost) 
+			{
+				d.setLost(lost);
+				onDeviceClaim(now, msg.sender, imei, "lost");
+			}
+			if(stolen)
+			{
+				d.setStolen(stolen);
+				onDeviceClaim(now, msg.sender, imei, "stolen");
+			}
+			if(broke)
+			{
+				d.setBroke(broke);
+				onDeviceClaim(now, msg.sender, imei, "broke");
+			}
+			if(scrap)
+			{
+				d.setScrap(scrap);
+				onDeviceClaim(now, msg.sender, imei, "broke");
+			}
+
+			return 2;
+		}
+		return 3;
 	}
 
 	function getInsurerRegistryInstance()

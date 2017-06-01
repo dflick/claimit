@@ -14,21 +14,23 @@
   <label for="accountList">Choose an account to use:</label>
   <select ng-init="selectedAccount" ng-change = "onChangeAccount()" ng-model="selectedAccount" ng-options="account for account in accountList track by account"></select> {{ selectedAccountData[0].name }}
   <hr>
-  <a href="http://localhost:8000/">Regulator</a> | 
-  <a href="http://localhost:8000/insurer.html">Insurer</a>
+  <a href="index.html">Regulator</a> | 
+  <a href="insurer.html">Insurer</a>
   <hr>
   <h1>ClaimIT</h1>
   <h2>Mobiles</h2>
-  <h1><label for="addDevice">Add Device:</label></h1>
+  <h1><label for="addDeviceClaim">Add claim:</label></h1>
   <label for="imei">Imei</label>
   <br><input type="text" id="imei" ng-model="imei" placeholder="12345"></input>
-  <label for="deviceOwner">Owner</label>
-  <br><input type="text" id="deviceOwner" ng-model="deviceOwner" placeholder="1"></input>
-  <label for="insuranceOwner">Insured</label>
-  <br><input type="text" id="insuranceOwner" ng-model="insuranceOwner" placeholder="1"></input>
-  <label for="trashed">Trashed</label>
-  <br><input type="checkbox" id="trashed" value="true" ng-model="trashed"></input> 
-  <br><br><button id="addDevice" ng-click="addDevice(imei, deviceOwner, insuranceOwner, trashed)">Add Device</button>
+  <label for="deviceLost">Lost</label>
+  <br><input type="checkbox" id="deviceLost" value="true" ng-model="deviceLost"></input>
+  <label for="deviceStolen">Stolen</label>
+  <br><input type="checkbox" id="deviceStolen" value="true" ng-model="deviceStolen"></input>
+  <label for="deviceBroke">Broken</label>
+  <br><input type="checkbox" id="deviceBroke" value="true" ng-model="deviceBroke"></input>
+  <label for="deviceScrap">Scrapped</label>
+  <br><input type="checkbox" id="deviceScrap" value="true" ng-model="deviceScrap"></input> 
+  <br><br><button id="addDevice" ng-click="addDevice(imei, deviceLost, deviceStolen, deviceBroke, deviceScrap)">Claim it</button>
   <button id="listDevices" ng-click="listDevices()">List Devices</button>
   <button id="findDevice" ng-click="findDevice(imei)">Find Device</button>
   <br>
@@ -36,11 +38,13 @@
   <!-- <br><br><span class="black"><span id="mobiles">{{ mobiles }}</span> -->
   <br><br>
   <table>
-    <tr ng-repeat="x in mobiles">
+    <tr ng-repeat="x in mobileClaims">
       <td>{{x.imei}}</td>
-      <td>{{x.owner}}</td>
-      <td>{{x.insured}}</td>
-      <td>{{x.trashed}}</td>
+      <td>{{x.lost}}</td>
+      <td>{{x.stolen}}</td>
+      <td>{{x.broke}}</td>
+      <td>{{x.scrap}}</td>
+
     </tr>
   </table>
 </body>
