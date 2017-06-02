@@ -347,6 +347,99 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
+  "42": {
+    "abi": [
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "newRegulator",
+            "type": "address"
+          }
+        ],
+        "name": "changeRegulator",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "close",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getRegulator",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "name": "adminInstanceAddress",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "name": "_oldRegulator",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_newRegulator",
+            "type": "address"
+          }
+        ],
+        "name": "OnRegulatorChanged",
+        "type": "event"
+      }
+    ],
+    "unlinked_binary": "0x6060604052346100005760405160208061021283398101604052515b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a03191633600160a060020a03161790555b505b6101ad806100656000396000f300606060405263ffffffff60e060020a60003504166308528190811461003a57806343d726d61461006f578063f7e317f41461007e575b610000565b3461000057610053600160a060020a03600435166100a7565b60408051600160a060020a039092168252519081900360200190f35b346100005761007c610145565b005b3461000057610053610171565b60408051600160a060020a039092168252519081900360200190f35b60015460009033600160a060020a039081169116146100c557610000565b6001805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03848116919091179182905560408051338316815292909116602083015280517fc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe9281900390910190a150600154600160a060020a03165b5b919050565b60005433600160a060020a0390811691161461016057610000565b600054600160a060020a0316ff5b5b565b600154600160a060020a03165b905600a165627a7a72305820c69818b44dae501590d846cc918f2987263dc1c9ce574b232d0313d5295028660029",
+    "events": {
+      "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "name": "_oldRegulator",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "_newRegulator",
+            "type": "address"
+          }
+        ],
+        "name": "OnRegulatorChanged",
+        "type": "event"
+      }
+    },
+    "updated_at": 1496385018385,
+    "links": {},
+    "address": "0x344547f4c59e78b059c0951912df096278337120"
+  },
   "default": {
     "abi": [
       {
@@ -436,9 +529,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1496320967883,
+    "updated_at": 1496395415092,
     "links": {},
-    "address": "0x5370a15caa8ec311a39f29cc9b93fed64f55670b"
+    "address": "0xd5a36d434cd88b5ac6f3612d41ed447d7ddc4aef"
   }
 };
 

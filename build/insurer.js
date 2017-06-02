@@ -33022,7 +33022,6 @@ app.config(function ($locationProvider) {
 
 app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$window', '$timeout', function($scope, $location, $http, $q, $window, $timeout){
 
-	$scope.curRegulator = "";
 	$scope.insurers = [];
 	$scope.accountList = [];
 	$scope.selectedAccount = "";
@@ -33041,23 +33040,20 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 
 				regulator.getRegulator({ from: $scope.selectedAccount, gas: 3000000 }).then( function(regulatorAddress) {
 					if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
-
 					$timeout( function() {
-						$scope.curRegulator = regulatorAddress;
 						$scope.regulatorIndicator = "Regulator";
 					});
 				}).catch( function(e) {
 					$timeout( function() {
-						$scope.curRegulator = "Not a Regulator";
+						$scope.regulatorIndicator = "Not Regulator";
 					});
 					console.error(e);
 				});
 			} else {
 				$timeout( function() {
-					$scope.curRegulator = "Address needed";
+					$scope.regulatorIndicator = "Address needed";
 				});
 			}
-			return $scope.curRegulator;
 		});
 	}
 
@@ -33069,15 +33065,12 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 
 		regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
 			if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
-
 			$timeout( function() {
-				$scope.curRegulator = regulatorAddress;
 				$scope.regulatorIndicator = "Regulator";
 			});
-			return $scope.curRegulator;
 		}).catch( function(e) {
 			$timeout( function() {
-				$scope.curRegulator = "Not a Regulator";
+				$scope.regulatorIndicator = "Not Regulator";
 			});
 			console.error(e);
 		});
@@ -33087,7 +33080,7 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 		setStatus("");
 		var insurer = Claimit.deployed();
 
-		insurer.addInsurer(newAddress, newName, newBusinessID, { from: $scope.curRegulator, gas: 3000000 }).then( function(txnHash) {
+		insurer.addInsurer(newAddress, newName, newBusinessID, { from: $scope.selectedAccount, gas: 3000000 }).then( function(txnHash) {
 			return web3.eth.getTransactionReceiptMined(txnHash).then( function(receipt) {
 				setStatus("New Insurer added: " + newName);
 			}).catch( function(e) {

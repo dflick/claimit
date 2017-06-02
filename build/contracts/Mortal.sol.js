@@ -347,6 +347,27 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   };
 
   Contract.all_networks = {
+  "42": {
+    "abi": [
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "close",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "payable": false,
+        "type": "constructor"
+      }
+    ],
+    "unlinked_binary": "0x606060405234610000575b60008054600160a060020a03191633600160a060020a03161790555b5b609e806100356000396000f300606060405263ffffffff60e060020a60003504166343d726d681146022575b6000565b34600057602c602e565b005b6000543373ffffffffffffffffffffffffffffffffffffffff9081169116146054576000565b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b5b5600a165627a7a72305820771b443895d256cdff43a9e01b34a45a07355bdfd2c1e476323fe3dfa2b2049f0029",
+    "events": {},
+    "updated_at": 1496385018451,
+    "links": {}
+  },
   "default": {
     "abi": [
       {
@@ -365,7 +386,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x606060405234610000575b60008054600160a060020a03191633600160a060020a03161790555b5b609e806100356000396000f300606060405263ffffffff60e060020a60003504166343d726d681146022575b6000565b34600057602c602e565b005b6000543373ffffffffffffffffffffffffffffffffffffffff9081169116146054576000565b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b5b5600a165627a7a723058209c2f3a7f70cd590854ef995dea9b427add784fe234da875a08dcbb5a58e987ca0029",
     "events": {},
-    "updated_at": 1496320967878,
+    "updated_at": 1496395415083,
     "links": {}
   }
 };
