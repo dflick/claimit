@@ -1,5 +1,7 @@
+var DefaultBuilder = require("truffle-default-builder");
+
 module.exports = {
-  build: {
+  build: new DefaultBuilder({
     "index.html": "index.html",
     "insurer.html": "insurer.html",
     "claim.html": "claim.html",
@@ -33,18 +35,22 @@ module.exports = {
       "stylesheets/app.css"
     ],
     "images/": "images/"
-  },
-  rpc: {
-    host: "localhost",
-    port: 8545
-  },
+  }),
   networks: {
-    "dev": {
+    development: {
+      host: "localhost",
+      port: 8545,
+      network_id: "*"
+    },
+    staging: {
+      host: "localhost",
+      port: 8545,
       network_id: 42
     },
-    "stg": {
-      network_id: 3,
-      gas: 4700000
+    ropsten: {
+      host: "localhost",
+      port: 8545,
+      network_id: 3
     }
   }
 };

@@ -33030,7 +33030,8 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 
 	$window.onload = function() {
 		initUtils(web3);
-		var regulator = Regulator.deployed();
+		setStatus("");
+		var regulator = "";
 		$scope.regulatorIndicator = "";
 
     	web3.eth.getAccounts((e, accounts) => { 
@@ -33038,15 +33039,20 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
     			$scope.accountList = accounts;
     			$scope.selectedAccount = $scope.accountList[0];
 
-				regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
-					if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
-					$timeout( function() {
-						$scope.regulatorIndicator = "Regulator";
+    			Regulator.deployed().then(function(regulatorInstance) {
+    				regulator = regulatorInstance;
+					return regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
+						if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
+						$timeout( function() {
+							$scope.regulatorIndicator = "Regulator";
+						});
+					}).catch( function(e) {
+						$timeout( function() {
+							$scope.regulatorIndicator = "Not Regulator";
+						});
+						console.error(e);
 					});
-				}).catch( function(e) {
-					$timeout( function() {
-						$scope.regulatorIndicator = "Not Regulator";
-					});
+				}).catch(function(e) {
 					console.error(e);
 				});
 			} else {
@@ -33060,37 +33066,48 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 	$scope.onChangeAccount = function(selectedAccount) {
 		initUtils(web3);
 		setStatus("");
-		var regulator = Regulator.deployed();
+		var regulator = "";
 		$scope.regulatorIndicator = "";
 
-		regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
-			if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
-			$timeout( function() {
-				$scope.regulatorIndicator = "Regulator";
+		Regulator.deployed().then(function(regulatorInstance) {
+			regulator = regulatorInstance;
+			return regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
+				if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
+				$timeout( function() {
+					$scope.regulatorIndicator = "Regulator";
+				});
+			}).catch( function(e) {
+				$timeout( function() {
+					$scope.regulatorIndicator = "Not Regulator";
+				});
+				console.error(e);
 			});
-		}).catch( function(e) {
-			$timeout( function() {
-				$scope.regulatorIndicator = "Not Regulator";
-			});
+		}).catch(function(e) {
 			console.error(e);
 		});
 	}
 
 	$scope.changeRegulator = function(newRegulator) {
-		var regulator = Regulator.deployed();
 
-		regulator.changeRegulator(newRegulator, { from: $scope.selectedAccount, gas: 3000000 }).then( function(txn) {
-			return web3.eth.getTransactionReceiptMined(txn);
-		}).then( function(receipt) {
-			setStatus("New Regulator: " + newRegulator);
-		}).catch( function(e) {
-			setStatus("Action not allowed.")
+		var regulator = "";
+		
+		Regulator.deployed().then(function(regulatorInstance) {
+			regulator = regulatorInstance;
+			return regulator.changeRegulator(newRegulator, { from: $scope.selectedAccount, gas: 3000000 }).then( function(txn) {
+				return web3.eth.getTransactionReceiptMined(txn);
+			}).then( function(receipt) {
+				setStatus("New Regulator: " + newRegulator);
+			}).catch( function(e) {
+				setStatus("Action not allowed.")
+				console.error(e);
+			});
+		}).catch(function(e) {
 			console.error(e);
 		});
 	};
 
 	$scope.getRegulator = function() {
-		var regulator = Regulator.deployed();
+		var regulator = "";
 		$scope.theRegulator = [];
 
 		/*
@@ -33102,15 +33119,20 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 			});
 		});
 
-		regulator.getRegulator.call().then(function(address) {
-			$timeout(function() {
-				$scope.theRegulator.push({
-					regulator: address
+		Regulator.deployed().then(function(regulatorInstance) {
+			regulator = regulatorInstance;
+			return regulator.getRegulator.call().then(function(address) {
+				$timeout(function() {
+					$scope.theRegulator.push({
+						regulator: address
+					});
 				});
+			}).catch(function(e) {
+				setStatus("Something went wrong");
+				console.error(e);
 			});
 		}).catch(function(e) {
-			setStatus("Something went wrong");
 			console.error(e);
-		})
+		});
 	}
 }]);

@@ -15,82 +15,110 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 	$scope.selectedAccountData = [];
 
 	$window.onload = function() {
+		setStatus("");
 		initUtils(web3);
 		$scope.curInsurer = "";
 		$scope.curInsurerInstance = "";
-		var insurerRegistry = InsurerRegistry.deployed();
+		var insurerRegistry = "";
+		var claimit = "";
 
     	web3.eth.getAccounts((e, accounts) => { 
-
     		if(accounts.length > 0) {
-
     			$timeout(function(){
 		   			$scope.accountList = accounts;
 		   			$scope.selectedAccount = $scope.accountList[0];
-
-					insurerRegistry.getInsurer($scope.selectedAccount).then( function(instanceAddr) {
-						
-						if(instanceAddr == 0x0) {
-							console.log("not insurer");
-							return;
-						}
-
-						$timeout( function() {
-							$scope.curInsurer = $scope.selectedAccount;
-							$scope.curInsurerInstance = instanceAddr;
-							$scope.getInsurer();
-						});
-
-					}).catch( function(e) {
-						console.error(e);
-					});
+		   			return Claimit.deployed().then(function(claimitInstance) {
+		   				claimit = claimitInstance;
+		   				return claimit.getInsurerRegistryInstance().then(function(insurerRegistryInstanceAddress) {
+		   					return InsurerRegistry.at(insurerRegistryInstanceAddress).then(function(insurerRegistryInstance) {
+								insurerRegistry = insurerRegistryInstance;
+								insurerRegistry.getInsurer($scope.selectedAccount).then(function(instanceAddr) {
+									if(instanceAddr == 0x0) {
+										console.log("not insurer");
+										return;
+									}
+									$timeout( function() {
+										$scope.curInsurer = $scope.selectedAccount;
+										$scope.curInsurerInstance = instanceAddr;
+										return $scope.getInsurer();
+									});
+								}).catch( function(e) {
+									console.error(e);
+								});
+		   					}).catch(function(e) {
+		   						console.error(e);
+		   					});
+		   				}).catch(function(e) {
+		   					console.error(e);
+		   				});
+		   			}).catch(function(e) {
+		   				console.error(e);
+		   			});
 				});
-
 			} else {
 				throw Error("No account");
 			}
+			return accounts;
         });
 	}
 
 	$scope.onChangeAccount = function(selectedAccount) {
+		setStatus("");
 		initUtils(web3);
 		$scope.curInsurer = "";
 		$scope.curInsurerInstance = "";
-		var insurerRegistry = InsurerRegistry.deployed();
+		var insurerRegistry = "";
+		var claimit = "";
 
-		insurerRegistry.getInsurer($scope.selectedAccount).then( function(instanceAddr) {
-			
-			if(instanceAddr == 0x0) {
-				console.log("not insurer");
-				return; 
-			}
-
-			$timeout( function() {
-				$scope.curInsurer = $scope.selectedAccount;
-				$scope.curInsurerInstance = instanceAddr;
-				$scope.getInsurer();
+		Claimit.deployed().then(function(claimitInstance) {
+			claimit = claimitInstance;
+			return claimit.getInsurerRegistryInstance().then(function(insurerRegistryInstanceAddress) {
+				return InsurerRegistry.at(insurerRegistryInstanceAddress).then(function(insurerRegistryInstance) {
+					insurerRegistry = insurerRegistryInstance;
+					return insurerRegistry.getInsurer($scope.selectedAccount).then( function(instanceAddr) {
+						if(instanceAddr == 0x0) {
+							console.log("not insurer");
+							return; 
+						}
+						$timeout( function() {
+							$scope.curInsurer = $scope.selectedAccount;
+							$scope.curInsurerInstance = instanceAddr;
+							return $scope.getInsurer();
+						});
+					}).catch( function(e) {
+						console.error(e);
+					});
+				}).catch(function(e) {
+					console.error(e);
+				});
+			}).catch(function(e) {
+				console.error(e);
 			});
-
-		}).catch( function(e) {
+		}).catch(function(e) {
 			console.error(e);
 		});
 	};
 
 	$scope.getInsurer = function() {
-		var insurer = Insurer.at($scope.curInsurerInstance);
+		var insurer = "";
 		$scope.selectedAccountData = [];
 
-		insurer.getAccount().then(function(account) {
-			insurer.getName().then(function(name) {
-				return insurer.getBusinessId().then(function(businessid) {
-					$timeout(function() {
-						$scope.selectedAccountData.push({
-							account: account,
-							name: name,
-							bid: businessid
+		Insurer.at($scope.curInsurerInstance).then(function(insurerInstance) {
+			insurer = insurerInstance;
+			return insurer.getAccount().then(function(account) {
+				return insurer.getName().then(function(name) {
+					return insurer.getBusinessId().then(function(businessid) {
+						$timeout(function() {
+							$scope.selectedAccountData.push({
+								account: account,
+								name: name,
+								bid: businessid
+							});
 						});
 					});
 				});
+			}).catch(function(e) {
+				console.error(e);
 			});
 			return $scope.selectedAccountData;
 		}).catch(function(e) {
@@ -99,8 +127,9 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 	}
 	
 	$scope.addDevice = function(imei, deviceLost, deviceStolen, deviceBroke, deviceScrap) {
+		setStatus("");
 
-		var claimit = Claimit.deployed();
+		var claimit = "";
 
 		var lost = "";
 		if(deviceLost != true) lost = false;
@@ -125,23 +154,26 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 
 		// NOTE TO ME: Any calls that change the state of the contract require a signed transaction. 
 		// Error: invalid address, might be due to lack of account in transaction. Although not sure.
-		claimit.addDeviceClaim(imei, lost, stolen, broke, scrap, { from: $scope.curInsurer, gas: 3000000}).then(function(txnHash) {
-				// Make sure you have initialized utilities initUtils(web3); in $window.onload function
-			return web3.eth.getTransactionReceiptMined(txnHash).then(function (receipt) {
-				setStatus("Claim added: " + imei);
+		Claimit.deployed().then(function(claimitInstance) {
+			claimit = claimitInstance;
+			return claimit.addDeviceClaim(imei, lost, stolen, broke, scrap, { from: $scope.curInsurer, gas: 3000000}).then(function(txnHash) {
+					// Make sure you have initialized utilities initUtils(web3); in $window.onload function
+					setStatus("Transaction validated.");
+					console.log(txnHash);
 			}).catch(function (e) {
-				setStatus("Transaction failed");
-				console.error("Transaction failed: " + e);
+				setStatus("Error while adding claim");
+				console.error("Error while adding claim: " + e);
 			});
-		}).catch(function (e) {
-			setStatus("Error while adding claim");
-			console.error("Error while adding claim: " + e);
+		}).catch(function(e) {
+			console.error(e);
 		});
 	}
 
 	$scope.findDevice = function(imei) {
-		var deviceRegistry = DeviceRegistry.deployed();
+		var deviceRegistry = "";
+		var claimit = "";
 		$scope.mobileClaims = [];
+		setStatus("");
 
 		/*
 		** Set the header row into table
@@ -156,28 +188,43 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 			});
 		});
 
-		deviceRegistry.getDevice(imei).then(function(deviceAddr) {
+		Claimit.deployed().then(function(claimitInstance) {
+			claimit = claimitInstance;
+			claimit.getDeviceRegistryInstance().then(function(deviceRegistryInstanceAddress) {
+				DeviceRegistry.at(deviceRegistryInstanceAddress).then(function(deviceRegistryInstance) {
+					deviceRegistry = deviceRegistryInstance;
 
-			if(deviceAddr == 0x0) {
-				console.log("no device " + imei);
-				setStatus("no device " + imei);
-				return;
-			}
+					deviceRegistry.getDevice(imei).then(function(deviceAddr) {
 
-			let device = Device.at(deviceAddr);
+						if(deviceAddr == 0x0) {
+							console.log("no device " + imei);
+							setStatus("no device " + imei);
+							return;
+						}
 
-			return device.getLost().then(function(lostIndicator) {
-				return device.getStolen().then(function(stolenIndicator) {
-					return device.getBroke().then(function(brokeIndicator) {
-						return device.getScrap().then(function(scrapIndicator) {
-							$timeout(function() {
-								$scope.mobileClaims.push({
-									imei: imei,
-									lost: lostIndicator,
-									stolen: stolenIndicator,
-									broke: brokeIndicator,
-									scrap: scrapIndicator
+						let device = Device.at(deviceAddr);
+
+						return device.getLost().then(function(lostIndicator) {
+							return device.getStolen().then(function(stolenIndicator) {
+								return device.getBroke().then(function(brokeIndicator) {
+									return device.getScrap().then(function(scrapIndicator) {
+										$timeout(function() {
+											$scope.mobileClaims.push({
+												imei: imei,
+												lost: lostIndicator,
+												stolen: stolenIndicator,
+												broke: brokeIndicator,
+												scrap: scrapIndicator
+											});
+										});
+									}).catch(function(e) {
+										console.error(e);
+									});
+								}).catch(function(e) {
+									console.error(e);
 								});
+							}).catch(function(e) {
+								console.error(e);
 							});
 						}).catch(function(e) {
 							console.error(e);
@@ -197,8 +244,10 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 	}
 
 	$scope.listDevices = function() {
-		var deviceRegistry = DeviceRegistry.deployed();
+		var deviceRegistry = "";
+		var claimit = "";
 		$scope.mobileClaims = [];
+		setStatus("");
 
 		/*
 		** Set the header row into table
@@ -213,26 +262,40 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 			});
 		});
 
-		deviceRegistry.getDevices().then(function(devices) {
-			console.log(devices.length);
+		Claimit.deployed().then(function(claimitInstance) {
+			claimit = claimitInstance;
+			claimit.getDeviceRegistryInstance().then(function(deviceRegistryInstanceAddress) {
+				DeviceRegistry.at(deviceRegistryInstanceAddress).then(function(deviceRegistryInstance) {
+					deviceRegistry = deviceRegistryInstance;
+					deviceRegistry.getDevices().then(function(devices) {
+						console.log(devices.length);
 
-			for(var i=0; i<devices.length; i++) {
-				console.log(devices[i]);
-				const device = Device.at(devices[i]);
+						for(var i=0; i<devices.length; i++) {
+							console.log(devices[i]);
+							const device = Device.at(devices[i]);
 
-				device.getImei().then(function(imei) {
-					return device.getLost().then(function(lostIndicator) {
-						return device.getStolen().then(function(stolenIndicator) {
-							return device.getBroke().then(function(brokeIndicator) {
-								return device.getScrap().then(function(scrapIndicator) {
-									$timeout(function() {
-										$scope.mobileClaims.push({
-											imei: imei,
-											lost: lostIndicator,
-											stolen: stolenIndicator,
-											broke: brokeIndicator,
-											scrap: scrapIndicator
+							device.getImei().then(function(imei) {
+								return device.getLost().then(function(lostIndicator) {
+									return device.getStolen().then(function(stolenIndicator) {
+										return device.getBroke().then(function(brokeIndicator) {
+											return device.getScrap().then(function(scrapIndicator) {
+												$timeout(function() {
+													$scope.mobileClaims.push({
+														imei: imei,
+														lost: lostIndicator,
+														stolen: stolenIndicator,
+														broke: brokeIndicator,
+														scrap: scrapIndicator
+													});
+												});
+											}).catch(function(e) {
+												console.error(e);
+											});
+										}).catch(function(e) {
+											console.error(e);
 										});
+									}).catch(function(e) {
+										console.error(e);
 									});
 								}).catch(function(e) {
 									console.error(e);
@@ -240,19 +303,19 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 							}).catch(function(e) {
 								console.error(e);
 							});
-						}).catch(function(e) {
-							console.error(e);
-						});
+						}
+
+						return $scope.mobileClaims;
+
 					}).catch(function(e) {
 						console.error(e);
 					});
 				}).catch(function(e) {
 					console.error(e);
 				});
-			}
-
-			return $scope.mobileClaims;
-
+			}).catch(function(e) {
+				console.error(e);
+			});
 		}).catch(function(e) {
 			console.error(e);
 		});

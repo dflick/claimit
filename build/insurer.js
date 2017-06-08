@@ -33030,7 +33030,7 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	$window.onload = function() {
 		initUtils(web3);
 		setStatus("");
-		var regulator = Regulator.deployed();
+		var regulator = "";
 		$scope.regulatorIndicator = "";
 
 		web3.eth.getAccounts((e, accounts) => {
@@ -33038,17 +33038,22 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	   			$scope.accountList = accounts;
 	   			$scope.selectedAccount = $scope.accountList[0];
 
-				regulator.getRegulator({ from: $scope.selectedAccount, gas: 3000000 }).then( function(regulatorAddress) {
-					if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
-					$timeout( function() {
-						$scope.regulatorIndicator = "Regulator";
+	   			Regulator.deployed().then(function(regulatorInstance) {
+	   				regulator = regulatorInstance;
+					return regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) {
+						if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
+						$timeout( function() {
+							$scope.regulatorIndicator = "Regulator";
+						});
+					}).catch( function(e) {
+						$timeout( function() {
+							$scope.regulatorIndicator = "Not Regulator";
+						});
+						console.error(e);
 					});
-				}).catch( function(e) {
-					$timeout( function() {
-						$scope.regulatorIndicator = "Not Regulator";
-					});
-					console.error(e);
-				});
+	   			}).catch(function(e) {
+	   				console.error(e);
+	   			});
 			} else {
 				$timeout( function() {
 					$scope.regulatorIndicator = "Address needed";
@@ -33060,43 +33065,48 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	$scope.onChangeAccount = function(selectedAccount) {
 		initUtils(web3);
 		setStatus("");
-		var regulator = Regulator.deployed();
+		var regulator = "";
 		$scope.regulatorIndicator = "";
 
-		regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
-			if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
-			$timeout( function() {
-				$scope.regulatorIndicator = "Regulator";
+		Regulator.deployed().then(function(regulatorInstance) {
+			regulator = regulatorInstance;
+			return regulator.getRegulator({ from: $scope.selectedAccount }).then( function(regulatorAddress) { 	
+				if(regulatorAddress != $scope.selectedAccount) throw Error("Not a Regulator");
+				$timeout( function() {
+					$scope.regulatorIndicator = "Regulator";
+				});
+			}).catch( function(e) {
+				$timeout( function() {
+					$scope.regulatorIndicator = "Not Regulator";
+				});
+				console.error(e);
 			});
-		}).catch( function(e) {
-			$timeout( function() {
-				$scope.regulatorIndicator = "Not Regulator";
-			});
+		}).catch(function(e) {
 			console.error(e);
 		});
 	};
 
-	$scope.addNewInsurer = function(newAddress, newName) {
+	$scope.addNewInsurer = function(newAddress, newName, newBusinessID) {
 		setStatus("");
-		var insurer = Claimit.deployed();
+		var claimit = "";
 
-		insurer.addInsurer(newAddress, newName, newBusinessID, { from: $scope.selectedAccount, gas: 3000000 }).then( function(txnHash) {
-			return web3.eth.getTransactionReceiptMined(txnHash).then( function(receipt) {
+		Claimit.deployed().then(function(claimitInstance) {
+			claimit = claimitInstance;
+			return claimit.addInsurer(newAddress, newName, newBusinessID, { from: $scope.selectedAccount, gas: 500000 }).then( function(txnHash) {
 				setStatus("New Insurer added: " + newName);
 			}).catch( function(e) {
-				setStatus("Transaction failed.");
+				setStatus("Adding Insurer failed.");
 				console.error(e);
 			});
-		}).catch( function(e) {
-			setStatus("Adding Insurer failed.");
+		}).catch(function(e) {
 			console.error(e);
 		});
 	}
 
 	$scope.listInsurers = function() {
 		setStatus("");
-		var insurerRegistry = InsurerRegistry.deployed();
-
+		var claimit = "";
+		var insurerRegistry = "";
 		$scope.insurerIndex = 0;
 		$scope.insurers = [];
 
@@ -33109,26 +33119,45 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 			});
 		});
 
-		insurerRegistry.getInsurers().then(function(reg) {
-
-			for(var i=0; i<reg.length; i++) {
-				// this has to be constant for some reason
-				const insurer = Insurer.at(reg[i]);
-
-				insurer.getAccount().then(function(acc) {
-					return insurer.getName().then(function(nm) {
-						$timeout(function() {
-							$scope.insurers.push({
-								insurerAddress: acc,
-								insurerName: nm
+		Claimit.deployed().then(function(claimitInstance) {
+			claimit = claimitInstance;
+			return claimit.getInsurerRegistryInstance().then(function(insurerRegistryInstanceAddress) {
+				return InsurerRegistry.at(insurerRegistryInstanceAddress).then(function(insurerRegistryInstance) {
+					insurerRegistry = insurerRegistryInstance;
+					return insurerRegistry.getInsurers().then(function(reg) {
+						for(var i=0; i<reg.length; i++) {
+							// this has to be let because var 
+							// bleeds all over the place across { }
+							let insurer = "";
+							// this warns about not returning promise, but
+							// if you return, loop will exit at first round
+							Insurer.at(reg[i]).then(function(insurerInstance) {
+								insurer = insurerInstance;
+								return insurer.getAccount().then(function(acc) {
+									return insurer.getName().then(function(nm) {
+										$timeout(function() {
+											$scope.insurers.push({
+												insurerAddress: acc,
+												insurerName: nm
+											});
+										});
+									});
+								}).catch(function(e) {
+									console.error(e);
+								});
+							}).catch(function(e) {
+								console.error(e);
 							});
-						});
+						}
+					}).catch(function(e) {
+						console.error(e);
 					});
 				}).catch(function(e) {
 					console.error(e);
 				});
-			}
-			return $scope.insurers;
+			}).catch(function(e) {
+				console.error(e);
+			});
 		}).catch(function(e) {
 			console.error(e);
 		});

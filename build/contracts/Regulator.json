@@ -1,0 +1,311 @@
+{
+  "contract_name": "Regulator",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newRegulator",
+          "type": "address"
+        }
+      ],
+      "name": "changeRegulator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "close",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getRegulator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_oldRegulator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_newRegulator",
+          "type": "address"
+        }
+      ],
+      "name": "OnRegulatorChanged",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b5b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a03191633600160a060020a03161790555b5b6101a8806100566000396000f300606060405263ffffffff60e060020a60003504166308528190811461003757806343d726d61461006f578063f7e317f414610081575bfe5b341561003f57fe5b610053600160a060020a03600435166100ad565b60408051600160a060020a039092168252519081900360200190f35b341561007757fe5b61007f61013f565b005b341561008957fe5b61005361016c565b60408051600160a060020a039092168252519081900360200190f35b60015460009033600160a060020a039081169116146100cc5760006000fd5b60018054600160a060020a031916600160a060020a03848116919091179182905560408051338316815292909116602083015280517fc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe9281900390910190a150600154600160a060020a03165b5b919050565b60005433600160a060020a0390811691161461015b5760006000fd5b600054600160a060020a0316ff5b5b565b600154600160a060020a03165b905600a165627a7a72305820356f52fc0430a76b5b0322b5acab8957fda5165e9b17e4df072ad39ffe8d456b0029",
+  "networks": {
+    "42": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x1e22840c15460cc8b5bd8152f5ab25037905a82a",
+      "updated_at": 1496938639176
+    },
+    "1496678168947": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6fb8a5a8d2df0ee0c30b2346ab8e0bfcdf8dcbef",
+      "updated_at": 1496678635823
+    },
+    "1496742748226": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x89e158a09e96c9b711059110f13986a8c486ff19",
+      "updated_at": 1496743801509
+    },
+    "1496929668245": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x1a61a2f920da28207eee8e650ff1e01ecb6c2cb1",
+      "updated_at": 1496929974157
+    },
+    "1496929994034": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x963dbd047f0dffa700aef62c5a012a89f398906d",
+      "updated_at": 1496930143876
+    },
+    "1496930156441": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc66b6012481e38b428b1c526c6683adb77051459",
+      "updated_at": 1496930161946
+    },
+    "1496930411688": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc66b6012481e38b428b1c526c6683adb77051459",
+      "updated_at": 1496930418051
+    },
+    "1496930471865": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc66b6012481e38b428b1c526c6683adb77051459",
+      "updated_at": 1496930477843
+    },
+    "1496930902340": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc66b6012481e38b428b1c526c6683adb77051459",
+      "updated_at": 1496930914093
+    },
+    "1496930990981": {
+      "events": {
+        "0xc864dab2908c0e990862afc7488b0c28178a45d600fc7c2e255be37a8395b6fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldRegulator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newRegulator",
+              "type": "address"
+            }
+          ],
+          "name": "OnRegulatorChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc66b6012481e38b428b1c526c6683adb77051459",
+      "updated_at": 1496930999847
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1496938639176
+}

@@ -8,8 +8,8 @@ ipfs add -r .
 - Adds folder recursively to ipfs
 
 Current ipfs folder and file names:
-QmQoVsz738gyLpbAFaXgUkciXX3AVVGgfQ3qhZCatBDHhs - skeleton version for testnet 2.6.2017
+QmXe2wKbcE5PQm6cx9x6kBYh1PFLBfdiPqTTSnGBeUBfq5 - skeleton version for testnet 2.6.2017
 
 Address:
-http://ipfs.b9lab.com:8080/ipfs/QmQoVsz738gyLpbAFaXgUkciXX3AVVGgfQ3qhZCatBDHhs
-http://localhost:8080/ipfs/QmQoVsz738gyLpbAFaXgUkciXX3AVVGgfQ3qhZCatBDHhs
+http://ipfs.b9lab.com:8080/ipfs/QmXe2wKbcE5PQm6cx9x6kBYh1PFLBfdiPqTTSnGBeUBfq5
+http://localhost:8080/ipfs/QmXe2wKbcE5PQm6cx9x6kBYh1PFLBfdiPqTTSnGBeUBfq5

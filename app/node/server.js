@@ -193,17 +193,21 @@ Http.createServer(function(request, response) {
 				console.log(scrap);
 				console.log("");
 
-				Claimit.deployed().addDeviceClaim(imei, lost, stolen, broke, scrap, {from: account, gas: 3000000 }).then(txnHash => {
+				var claimit = "";
+				Claimit.deployed().then(function(claimitInstance) {
+					claimit = claimitInstance;
+					claimit.addDeviceClaim(imei, lost, stolen, broke, scrap, {from: account, gas: 3000000 }).then(txnHash => {
 
-							
-					response.writeHeader(200, {"Content-Type": "application/json)"});
-					response.write(JSON.stringify({ transactionHash: txnHash }) + '\n');
-					response.end();
+						response.writeHeader(200, {"Content-Type": "application/json)"});
+						response.write(JSON.stringify({ transactionHash: txnHash }) + '\n');
+						response.end();
 
-				}).catch(function(err) {
-					console.error(err);
+					}).catch(function(err) {
+						console.error(err);
+					});
+				}).catch(function(e) {
+					console.error(e);
 				});
-
 			}).catch(function (err) {
 				console.error(err);
 			});

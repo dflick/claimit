@@ -23,7 +23,7 @@ contract Regulator is Mortal
 		_;
 	}
 	
-	function Regulator(address adminInstanceAddress) 
+	function Regulator() 
 	{
 		regulator = msg.sender;
 	}

@@ -39,6 +39,6 @@ contract Admin is Mortal
 	function close() 
 		isAdmin 
 	{
-		selfdestruct(msg.sender);
+		selfdestruct(admin);
 	}
 }

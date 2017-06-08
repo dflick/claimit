@@ -1,0 +1,308 @@
+{
+  "contract_name": "Admin",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "close",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAdmin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "setAdmin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_oldAdmin",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "OnAdminChanged",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b5b5b60008054600160a060020a03191633600160a060020a03161790555b60018054600160a060020a03191633600160a060020a03161790555b5b6101a8806100566000396000f300606060405263ffffffff60e060020a60003504166343d726d681146100375780636e9960c314610049578063704b6c0214610075575bfe5b341561003f57fe5b6100476100ad565b005b341561005157fe5b6100596100da565b60408051600160a060020a039092168252519081900360200190f35b341561007d57fe5b610059600160a060020a03600435166100ea565b60408051600160a060020a039092168252519081900360200190f35b60015433600160a060020a039081169116146100c95760006000fd5b600154600160a060020a0316ff5b5b565b600154600160a060020a03165b90565b60015460009033600160a060020a039081169116146101095760006000fd5b60018054600160a060020a031916600160a060020a03848116919091179182905560408051338316815292909116602083015280517f0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb69281900390910190a150600154600160a060020a03165b5b9190505600a165627a7a723058207e7d7ac151b7b29c851b988a33fe3c7717ba0623eb90f3498962edc51196a7d90029",
+  "networks": {
+    "42": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xdd32ca9974a458fc5b25a77f058099daf3ebe038",
+      "updated_at": 1496938639189
+    },
+    "1496678168947": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8101fc444d1294db8785d67a9aae6cb2fea76e65",
+      "updated_at": 1496678635816
+    },
+    "1496742748226": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x17b0fd010cc02fd997081f71acd0f7a49dcf0468",
+      "updated_at": 1496743801501
+    },
+    "1496929668245": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xfb8e1271d36cf9edaf1142cb1463aee7d77c8eb0",
+      "updated_at": 1496929974146
+    },
+    "1496929994034": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9fd5aefdc145f1baebaba72630c61446eb39e4c0",
+      "updated_at": 1496930143862
+    },
+    "1496930156441": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xec25e4091f4ae8ca925c38eea22f7ce7e3fddde9",
+      "updated_at": 1496930161943
+    },
+    "1496930411688": {
+      "links": {},
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "updated_at": 1496930418035
+    },
+    "1496930471865": {
+      "links": {},
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "updated_at": 1496930477833
+    },
+    "1496930902340": {
+      "links": {},
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "updated_at": 1496930914083
+    },
+    "1496930990981": {
+      "events": {
+        "0x0eff8871385f19baa9372d294e7a023dbcbe49fa8ce5df276558dc737d8f0bb6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_oldAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "OnAdminChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xec25e4091f4ae8ca925c38eea22f7ce7e3fddde9",
+      "updated_at": 1496930999826
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1496938639189
+}
