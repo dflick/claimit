@@ -4,7 +4,9 @@
 ** lose the whole solution forever. This is one of the first things to 
 ** fix if solution would go live.
 **
-** Add a deposit for regulator so that regulator is able to function.
+** Add a deposit for regulator so that regulator is able to function?
+**
+** MVP could be to add changeRegulatorAsAdmin function?
 */
 
 pragma solidity ^0.4.5;

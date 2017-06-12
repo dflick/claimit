@@ -12,7 +12,6 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	$scope.regulatorIndicator = "";
 
 	$window.onload = function() {
-		initUtils(web3);
 		setStatus("");
 		var regulator = "";
 		$scope.regulatorIndicator = "";
@@ -47,7 +46,6 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 	}
 
 	$scope.onChangeAccount = function(selectedAccount) {
-		initUtils(web3);
 		setStatus("");
 		var regulator = "";
 		$scope.regulatorIndicator = "";
@@ -76,8 +74,12 @@ app.controller("insurerController", ['$scope', '$location', '$http', '$q', '$win
 
 		Claimit.deployed().then(function(claimitInstance) {
 			claimit = claimitInstance;
-			return claimit.addInsurer(newAddress, newName, newBusinessID, { from: $scope.selectedAccount, gas: 500000 }).then( function(txnHash) {
-				setStatus("New Insurer added: " + newName);
+			setStatus("executing transaction...");
+			return claimit.addInsurer(newAddress, newName, newBusinessID, { from: $scope.selectedAccount, gas: 500000 }).then( function(txn) {
+				setStatus("transaction validated");
+				// works in truffle 3 but not in ropsten
+				// if(txn.logs[0].type == "mined") setStatus("New Insurer added: " + newName);
+				// else setStatus("Transaction was not mined in time limits");
 			}).catch( function(e) {
 				setStatus("Adding Insurer failed.");
 				console.error(e);

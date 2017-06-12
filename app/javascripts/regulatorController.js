@@ -34,7 +34,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 						$timeout( function() {
 							$scope.regulatorIndicator = "Not Regulator";
 						});
-						console.error(e);
+						// console.error(e);
 					});
 				}).catch(function(e) {
 					console.error(e);
@@ -64,7 +64,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 				$timeout( function() {
 					$scope.regulatorIndicator = "Not Regulator";
 				});
-				console.error(e);
+				// console.error(e);
 			});
 		}).catch(function(e) {
 			console.error(e);
@@ -72,18 +72,20 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 	}
 
 	$scope.changeRegulator = function(newRegulator) {
-
+		setStatus("");
 		var regulator = "";
 		
 		Regulator.deployed().then(function(regulatorInstance) {
 			regulator = regulatorInstance;
+			setStatus("executing transaction...");
 			return regulator.changeRegulator(newRegulator, { from: $scope.selectedAccount, gas: 3000000 }).then( function(txn) {
-				return web3.eth.getTransactionReceiptMined(txn);
-			}).then( function(receipt) {
-				setStatus("New Regulator: " + newRegulator);
+				setStatus("transaction validated");
+				// works in truffle 3 while developing, but not in ropsten
+				// if(txn.logs[0].type == "mined") setStatus("New Regulator: " + newRegulator);
+				// else setStatus("Transaction was not mined in time limits");
 			}).catch( function(e) {
 				setStatus("Action not allowed.")
-				console.error(e);
+				// console.error(e);
 			});
 		}).catch(function(e) {
 			console.error(e);
@@ -91,6 +93,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 	};
 
 	$scope.getRegulator = function() {
+		setStatus("");
 		var regulator = "";
 		$scope.theRegulator = [];
 
@@ -113,7 +116,7 @@ app.controller("regulatorController", ['$scope', '$location', '$http', '$q', '$w
 				});
 			}).catch(function(e) {
 				setStatus("Something went wrong");
-				console.error(e);
+				// console.error(e);
 			});
 		}).catch(function(e) {
 			console.error(e);

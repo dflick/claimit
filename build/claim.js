@@ -33172,9 +33172,10 @@ app.controller("claimController",  ['$scope', '$location', '$http', '$q', '$wind
 		// Error: invalid address, might be due to lack of account in transaction. Although not sure.
 		Claimit.deployed().then(function(claimitInstance) {
 			claimit = claimitInstance;
+			setStatus("executing transaction...");
 			return claimit.addDeviceClaim(imei, lost, stolen, broke, scrap, { from: $scope.curInsurer, gas: 3000000}).then(function(txnHash) {
 					// Make sure you have initialized utilities initUtils(web3); in $window.onload function
-					setStatus("Transaction validated.");
+					setStatus("transaction validated");
 					console.log(txnHash);
 			}).catch(function (e) {
 				setStatus("Error while adding claim");

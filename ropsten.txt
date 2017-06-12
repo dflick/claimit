@@ -1,0 +1,7 @@
+0xe9f8f56838fc1f3b12bb00c8148db0a5eae49e4c - Device
+0xf9a9c4d94f35c7ee4e1c9cd1e5f675850d72204d - Insurer
+0xe8db17bfedc2251ab55320be346a09688d8ea061 - Regulator
+0x720bf1d6cc5feedf4f5a89b25a81f72965292376 - Admin
+0xc100adcb5cefc7d137559e7b6a662bb9f3700356 - InsurerRegistry
+0x4d893f521e07a16ed01a8fa697b22a7cc5ceab78 - DeviceRegistry
+0x00050069bf566a98ba1c9de7b4d18c3b6d02985c - Claimit

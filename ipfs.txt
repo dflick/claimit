@@ -7,9 +7,26 @@ ipfs pin rm <ipfs-address>
 ipfs add -r .
 - Adds folder recursively to ipfs
 
-Current ipfs folder and file names:
+*****
+
+Demo 1.0
+QmdxWYYXymwFRjkgQNJr3jjbfXYhr7mHn92zo1q4SzYFQE
+
+http://ipfs.b9lab.com:8080/ipfs/QmdxWYYXymwFRjkgQNJr3jjbfXYhr7mHn92zo1q4SzYFQE
+http://localhost:8080/ipfs/QmdxWYYXymwFRjkgQNJr3jjbfXYhr7mHn92zo1q4SzYFQE
+
+10.6.2017
+QmY13kXbQHjfFv3bAk3Z2KXRpf21TvAwzwkrd78uo67wqN
+
+10.6.2017 Address:
+http://ipfs.b9lab.com:8080/ipfs/QmY13kXbQHjfFv3bAk3Z2KXRpf21TvAwzwkrd78uo67wqN
+http://localhost:8080/ipfs/QmY13kXbQHjfFv3bAk3Z2KXRpf21TvAwzwkrd78uo67wqN
+
+*****
+
+OLD ipfs folder and file names:
 QmXe2wKbcE5PQm6cx9x6kBYh1PFLBfdiPqTTSnGBeUBfq5 - skeleton version for testnet 2.6.2017
 
-Address:
+OLD Address:
 http://ipfs.b9lab.com:8080/ipfs/QmXe2wKbcE5PQm6cx9x6kBYh1PFLBfdiPqTTSnGBeUBfq5
 http://localhost:8080/ipfs/QmXe2wKbcE5PQm6cx9x6kBYh1PFLBfdiPqTTSnGBeUBfq5

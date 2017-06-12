@@ -1,6 +1,8 @@
 
 
 /*
+** EXAMPLE:
+**
 ** https://github.com/b9lab/nodejs-ethereum/tree/master/app
 */
 
@@ -249,7 +251,6 @@ Http.createServer(function(request, response) {
 					claimit = claimitInstance;
 					claimit.addDeviceClaim(imei, lost, stolen, broke, scrap, {from: account, gas: 3000000 }).then(txnHash => {
 
-								
 						response.writeHeader(200, {"Content-Type": "application/json)"});
 						response.write(JSON.stringify({ transactionHash: txnHash }) + '\n');
 						response.end();
